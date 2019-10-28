@@ -1,8 +1,6 @@
 package com.francis.byteworkstest.serviceImpl;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -13,16 +11,13 @@ import org.springframework.stereotype.Service;
 import com.francis.byteworkstest.constant.AppConstants;
 import com.francis.byteworkstest.constant.ServerResponseStatus;
 import com.francis.byteworkstest.dto.OrderDto;
-import com.francis.byteworkstest.dto.OrderResponseDto;
 import com.francis.byteworkstest.dto.ServerResponse;
 import com.francis.byteworkstest.enumType.DeliveryMethod;
 import com.francis.byteworkstest.enumType.FoodType;
 import com.francis.byteworkstest.enumType.PaymentType;
 import com.francis.byteworkstest.mail.EmailService;
-import com.francis.byteworkstest.mail.Mail;
 import com.francis.byteworkstest.model.Developer;
 import com.francis.byteworkstest.model.Order;
-import com.francis.byteworkstest.model.User;
 import com.francis.byteworkstest.repository.DeveloperRepository;
 import com.francis.byteworkstest.repository.OrderRepository;
 import com.francis.byteworkstest.service.OrderService;

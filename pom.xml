@@ -222,16 +222,7 @@
 		    <artifactId>orika-core</artifactId>
 		    <version>1.5.2</version>
 		</dependency>
-		<dependency>
-		  	<groupId>com.cloudinary</groupId>
-		  	<artifactId>cloudinary-taglib</artifactId>
-		  	<version>1.22.1</version>
-		</dependency>
-		<dependency>
-		  	<groupId>com.cloudinary</groupId>
-		  	<artifactId>cloudinary-http44</artifactId>
-		  	<version>1.22.1</version>
-		</dependency>
+		
 	
 	</dependencies>
 
