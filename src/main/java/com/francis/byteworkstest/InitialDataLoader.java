@@ -54,7 +54,7 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 		}
 
 		createPrivilagesIfNotFound();
-		createAdminAccountIfNotFound();
+		createVendorAccountIfNotFound();
 		
 		
 		hasBeenSetup = true;
@@ -64,14 +64,14 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 
 		Privilege privileges;
 		
-		Privilege isAdmin = privilegeRepository.findByName(UserPrivilageType.isAdmin);
+		Privilege isUser = privilegeRepository.findByName(UserPrivilageType.isUser);
 		Privilege isDeveloper = privilegeRepository.findByName(UserPrivilageType.isDeveloper);
 		Privilege isVendor = privilegeRepository.findByName(UserPrivilageType.isVendor);
 		
 		
-		if (isAdmin == null) {
+		if (isUser == null) {
 			privileges = new Privilege();
-			privileges.setName(UserPrivilageType.isAdmin);
+			privileges.setName(UserPrivilageType.isUser);
 			privilegeRepository.save(privileges);
 		}
 
@@ -86,25 +86,20 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 			privilegeRepository.save(privileges);
 		}
 
-		
-		
-		
-		
-
 		return null;
 	}
 
-	private User createAdminAccountIfNotFound() {
+	private User createVendorAccountIfNotFound() {
 
 		User userAccount = userRepository.findByEmail(appConstants.APP_ADMIN_EMAIL);
-		Privilege isAdmin = privilegeRepository.findByName(UserPrivilageType.isAdmin);
+		Privilege isVendor = privilegeRepository.findByName(UserPrivilageType.isVendor);
 		
 		
-		Collection<Privilege> adminPrivileges = new HashSet<>();
-		adminPrivileges.add(isAdmin);
+		Collection<Privilege> vendorPrivileges = new HashSet<>();
+		vendorPrivileges.add(isVendor);
 		
 		
-		logger.info("Starting to create admin account ");
+		logger.info("Starting to create vendor account ");
 
 		if (userAccount != null) {
 			return null;
@@ -117,10 +112,10 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 		user.setFirstName(appConstants.APP_DEFAULT_ADMIN_NAME);
 		user.setLastName(appConstants.APP_DEFAULT_ADMIN_NAME);
 		user.setPassword(passwordEncoder.encode(appConstants.APP_ADMIN_PASSWORD));
-		user.setRole(UserRoleType.SYSTEM_ADMIN);
-		user.setPrivileges(adminPrivileges);
+		user.setRole(UserRoleType.VENDOR);
+		user.setPrivileges(vendorPrivileges);
 
-		logger.info("Admin Account " + user.getEmail());
+		logger.info("Vendor Account " + user.getEmail());
 		
 		User findEmail = userRepository.findByEmail(user.getEmail());
 

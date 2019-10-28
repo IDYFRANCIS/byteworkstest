@@ -1,6 +1,8 @@
 package com.francis.byteworkstest.serviceImpl;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -8,6 +10,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.francis.byteworkstest.constant.AppConstants;
 import com.francis.byteworkstest.constant.ServerResponseStatus;
 import com.francis.byteworkstest.dto.OrderDto;
 import com.francis.byteworkstest.dto.OrderResponseDto;
@@ -15,6 +18,8 @@ import com.francis.byteworkstest.dto.ServerResponse;
 import com.francis.byteworkstest.enumType.DeliveryMethod;
 import com.francis.byteworkstest.enumType.FoodType;
 import com.francis.byteworkstest.enumType.PaymentType;
+import com.francis.byteworkstest.mail.EmailService;
+import com.francis.byteworkstest.mail.Mail;
 import com.francis.byteworkstest.model.Developer;
 import com.francis.byteworkstest.model.Order;
 import com.francis.byteworkstest.model.User;
@@ -31,10 +36,16 @@ public class OrderServiceImpl implements OrderService{
 	EntityManager entityManager;
 	
 	@Autowired
+	AppConstants appConstants;
+	
+	@Autowired
 	OrderRepository orderRepo;
 	
 	@Autowired
 	DeveloperRepository developerRepo;
+	
+	@Autowired
+	private EmailService emailService;
 	
 	Utility utility = new Utility();
 
@@ -201,7 +212,25 @@ public class OrderServiceImpl implements OrderService{
 				order.setAmount(550 * request.getQuantity());
 			}
 			
-			//entityManager.persist(order);
+			//send mail notification on account creation
+			
+//			Mail mail = new Mail();
+//            mail.setTo(appConstants.APP_ADMIN_EMAIL);
+//            mail.setFrom("foodvendorsupport@byteworks.com");
+//            mail.setSubject("Food Order");
+//
+//            Map<String, Object> model = new HashMap<String, Object>();
+//             {
+//	            model.put("salutation", "Dear " + appConstants.APP_DEFAULT_ADMIN_NAME);
+//
+//			}
+//            model.put("message", "Order Notification from ByteWorks Food Vendor App, An order has been placed by a developer for food with order number: <b>" + orderCode + "</b>  Kindly ensure that this order is suplied to the developer with the specified parameters");
+//            model.put("link", appConstants.APP_WEB_URL + "/order/orderCode/" + orderCode);
+//            mail.setModel(model);
+//            mail.setTemplate("verify.ftl");
+//            
+//            emailService.sendSimpleMessage(mail);
+			
 			
 			orderRepo.save(order);
 			
@@ -245,7 +274,7 @@ public class OrderServiceImpl implements OrderService{
 			
 			if (orders == null) {
 				response.setData("");
-	            response.setMessage("Order with order number " + orders.getOrderNumber()+ " does not exist");
+	            response.setMessage("Order with order number " + orderNumber + " does not exist");
 	            response.setSuccess(false);
 	            response.setStatus(ServerResponseStatus.OK);
 	            return response;
@@ -310,7 +339,7 @@ public class OrderServiceImpl implements OrderService{
 			
 			response.setData(payment);
             response.setMessage("Order fetched successfully for selected payment type");
-            response.setSuccess(false);
+            response.setSuccess(true);
             response.setStatus(ServerResponseStatus.OK);
 			
 			
@@ -365,7 +394,7 @@ public class OrderServiceImpl implements OrderService{
 			
 			response.setData(food);
             response.setMessage("Order fetched successfully for selected food type");
-            response.setSuccess(false);
+            response.setSuccess(true);
             response.setStatus(ServerResponseStatus.OK);
 			
 		}catch(Exception e) {
@@ -419,7 +448,7 @@ public class OrderServiceImpl implements OrderService{
    			
    			   response.setData(delivery);
                response.setMessage("Order fetched successfully for selected delivery method");
-               response.setSuccess(false);
+               response.setSuccess(true);
                response.setStatus(ServerResponseStatus.OK);
    			
         	   

@@ -1,0 +1,26 @@
+# application.yml
+
+# host: in-v3.mailjet.com
+#    username: 260424e5b9dc172bb6aab1267ed0f560
+#    password: 46eb58d0ece23c9763ced569fb158378
+
+spring:
+  mail:
+    default-encoding: UTF-8
+    host: smtp.office365.com
+    username: foodvendorsupport@byteworks.com
+    password: PORTALaDm1n##
+    port: 587
+    properties:
+      mail:
+        smtp:
+          debug: true
+          port: 25
+          auth: true
+          starttls:
+              enable: true
+          socketFactory:
+            port: 587
+            fallback: false
+    protocol: smtp
+    test-connection: false
