@@ -11,7 +11,7 @@
 	<groupId>com.francis</groupId>
 	<artifactId>byteworkstest</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>byteworkstest</name>
 	<description>A Testing App</description>
 
