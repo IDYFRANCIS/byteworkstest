@@ -20,7 +20,7 @@ public interface OrderService {
 	
 	public Order findByOrderNumber(String orderNumber);
 	
-	public ServerResponse createOrder(OrderDto request);
+	public ServerResponse createOrder(OrderDto request, PaymentType paymentType, FoodType foodType, DeliveryMethod deliverType);
 	
 	public ServerResponse getOrderByOrderNumber(String orderNumber);
 	

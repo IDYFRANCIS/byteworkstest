@@ -35,16 +35,17 @@ public class OrderController {
 	
 
 	@ApiOperation(value = "Developers can place orders for food and get the total cost for the order", response = ServerResponse.class)
-	@RequestMapping(value = "", method = RequestMethod.POST)
+	@RequestMapping(value = "/{paymentType}/{foodType}/{deliveryType}", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<?> createOrder(@RequestHeader("Authorization")  String authorization, @RequestBody OrderDto request){
+	public ResponseEntity<?> createOrder(@RequestHeader("Authorization")  String authorization, @RequestBody OrderDto request, @PathVariable("paymentType") PaymentType paymentType, @PathVariable("foodType") FoodType foodType, @PathVariable("deliveryType") DeliveryMethod deliveryType){
 		
 		
 		ServerResponse response = new ServerResponse();
 		
 		try {
 			
-			response = orderService.createOrder(request);
+			response = orderService.createOrder(request, paymentType, foodType, deliveryType);
+					
 		 
 		} catch (Exception e) {
 			response.setData("An error occured" + e.getMessage());

@@ -8,9 +8,9 @@ public class OrderDto {
 
 	private String developerCode;
 	private long quantity;
-	private PaymentType paymentType;
-	private DeliveryMethod deliveryType;
-	private FoodType foodType;
+	//private PaymentType paymentType;
+	//private DeliveryMethod deliveryType;
+	//private FoodType foodType;
 	
 	
 	
@@ -27,24 +27,24 @@ public class OrderDto {
 	public void setQuantity(long quantity) {
 		this.quantity = quantity;
 	}
-	public PaymentType getPaymentType() {
-		return paymentType;
-	}
-	public void setPaymentType(PaymentType paymentType) {
-		this.paymentType = paymentType;
-	}
-	public DeliveryMethod getDeliveryType() {
-		return deliveryType;
-	}
-	public void setDeliveryType(DeliveryMethod deliveryType) {
-		this.deliveryType = deliveryType;
-	}
-	public FoodType getFoodType() {
-		return foodType;
-	}
-	public void setFoodType(FoodType foodType) {
-		this.foodType = foodType;
-	}
+//	public PaymentType getPaymentType() {
+//		return paymentType;
+//	}
+//	public void setPaymentType(PaymentType paymentType) {
+//		this.paymentType = paymentType;
+//	}
+//	public DeliveryMethod getDeliveryType() {
+//		return deliveryType;
+//	}
+//	public void setDeliveryType(DeliveryMethod deliveryType) {
+//		this.deliveryType = deliveryType;
+//	}
+//	public FoodType getFoodType() {
+//		return foodType;
+//	}
+//	public void setFoodType(FoodType foodType) {
+//		this.foodType = foodType;
+//	}
 	
 	
 }

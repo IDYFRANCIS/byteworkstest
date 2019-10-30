@@ -13,13 +13,7 @@
     <div style="background: #fff; width: 96%; max-width: 500px; margin: 2% auto; padding-bottom: 0;">
         
         
-        <table style="width: 100%; padding: 30px;">
-            <tr>
-                <td>
-                    <img src="https://github.com/Oluwadaminiola/template/raw/master/logo.png" alt="Share Portal" style="margin-left: -30px;">
-                </td>
-            </tr>
-            <tr>
+    
 
                 <td colspan="3">
                     <h1 style="font-family: roboto; font-size: 24px; line-height: 28px; font-weight: 500;">
@@ -64,15 +58,7 @@
             color: #CFCFCF;
             ">info@afriprud.com  |  +234 1 466 2000</p>
             <p class="text-center">
-                <a href="#" style="text-decoration: none; margin-right: 30px;">
-                    <img src="https://github.com/Oluwadaminiola/template/raw/master/instagram.png" alt="instagram">
-                </a>
-                <a href="#" style="text-decoration: none;">
-                    <img src="https://github.com/Oluwadaminiola/template/raw/master/twitter.png" alt="twitter">
-                </a>
-                <a href="#" style="text-decoration: none; margin-left: 30px;">
-                    <img src="https://github.com/Oluwadaminiola/template/raw/master/facebook.png" alt="facebook">
-                </a>
+                Thank you
             </p>
         </div>
     </div>
