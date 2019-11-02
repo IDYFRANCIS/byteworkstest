@@ -1,5 +1,11 @@
 package com.francis.byteworkstest.enumType;
 
+
+/**
+ * Enum for different food types
+ * @author Francis
+ *
+ */
 public enum FoodType {
 	
 	RICE_AND_STEW, RICE_AND_PEPPERSOUP,  FRIED_RICE,  JELLOF_RICE,  RICE_AND_BEANS,

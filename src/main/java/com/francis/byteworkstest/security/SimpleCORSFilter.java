@@ -1,9 +1,6 @@
 package com.francis.byteworkstest.security;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -22,6 +19,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
+
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class SimpleCORSFilter implements Filter {
@@ -34,27 +32,12 @@ public class SimpleCORSFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
 
         logger.info("SIMPLE CORS FILTER HAS BEEN REACHED => " + request.getRequestURL().toString());
-
-//        String[] allowedDomains = {"https://109.203.106.83:8096", "https://localhost:8096", "https://127.0.0.1:8096", "http://109.203.106.83:8096", "http://localhost:8443", "http://127.0.0.1:8096", "http://localhost:8080", "http://localhost:4200"};
-//        
-//        Set<String> allowedOrigins = new HashSet<String>(Arrays.asList(allowedDomains));
-//
-//        String origin = request.getHeader("Origin");
-//
-//        if (allowedOrigins.contains(origin)) {
-//        	logger.info("SIMPLE CORS FILTER HAS BEEN REACHED allow => " + origin);
-//            response.setHeader("Access-Control-Allow-Origin", origin);
-//        } else {
-//        	logger.info("SIMPLE CORS FILTER HAS BEEN REACHED allowed => " + request.getRequestURL().toString());
-//            response.setHeader("Access-Control-Allow-Origin", allowedDomains[0]);
-//        }
         
         response.setHeader("Access-Control-Allow-Origin", "*");
-        
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT");
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Credentials", "true");
-        response.setHeader("Access-Control-Allow-Headers", "Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method,Access-Control-Request-Headers,Authorization, Cache-Control, Expires");
+        response.setHeader("Access-Control-Allow-Headers", "Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method,Access-Control-Request-Headers,Authorization, Cache-Control, Expires, Content-Disposition");
         if (request.getMethod()
             .equals(HttpMethod.OPTIONS.name())) {
 
@@ -73,3 +56,4 @@ public class SimpleCORSFilter implements Filter {
     public void destroy() {
     }
 }
+

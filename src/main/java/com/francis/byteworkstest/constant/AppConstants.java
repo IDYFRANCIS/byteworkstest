@@ -3,6 +3,11 @@ package com.francis.byteworkstest.constant;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+
+/*
+ * Get resources data
+ * application.properties reference 
+ */
 @Component
 public class AppConstants {
 	

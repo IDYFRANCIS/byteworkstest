@@ -1,8 +1,8 @@
 # application.yml
 
-
-  spring:
-   mail:
+ 
+ spring:
+  mail:
     default-encoding: UTF-8
     host: smtp.gmail.com
     username: idongesitukut25@gmail.com
@@ -13,7 +13,7 @@
         smtp:
           port: 25
           auth: true
-          starttls: 
+          starttls:
               enable: true
           socketFactory:
             port: 465

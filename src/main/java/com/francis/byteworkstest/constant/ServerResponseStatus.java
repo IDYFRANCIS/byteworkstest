@@ -2,6 +2,10 @@ package com.francis.byteworkstest.constant;
 
 import org.springframework.http.HttpStatus;
 
+
+/*
+ * Http response status code definitions 
+ */
 public class ServerResponseStatus {
 
 	

@@ -22,6 +22,10 @@ import com.francis.byteworkstest.service.OrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
+
+/*
+ * Food Ordering and order request fetched by different parameters endpoint manager 
+ */
 @Controller
 @RequestMapping(value = "/order", produces = "application/json")
 @Api(tags = "Order Management", description = "Endpoint")
@@ -34,7 +38,7 @@ public class OrderController {
 	private HttpHeaders responseHeaders = new HttpHeaders();
 	
 
-	@ApiOperation(value = "Developers can place orders for food and get the total cost for the order", response = ServerResponse.class)
+	@ApiOperation(value = "Developers can place order for food and get the total cost for the order", response = ServerResponse.class)
 	@RequestMapping(value = "/{paymentType}/{foodType}/{deliveryType}", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<?> createOrder(@RequestHeader("Authorization")  String authorization, @RequestBody OrderDto request, @PathVariable("paymentType") PaymentType paymentType, @PathVariable("foodType") FoodType foodType, @PathVariable("deliveryType") DeliveryMethod deliveryType){

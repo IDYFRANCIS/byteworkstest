@@ -1,10 +1,11 @@
 package com.francis.byteworkstest.dto;
 
-import com.francis.byteworkstest.enumType.UserPrivilageType;
 import com.francis.byteworkstest.enumType.UserRoleType;
 
 public class DeveloperResponseDto {
 
+	private String developerCode;
+	
 	private String developerFristName;
 	
 	private String developerLastName;
@@ -19,10 +20,17 @@ public class DeveloperResponseDto {
 	
 	private UserRoleType userRoleType;
 	
-	private UserPrivilageType userPrivilageType;
 
 	
 	
+	public String getDeveloperCode() {
+		return developerCode;
+	}
+
+	public void setDeveloperCode(String developerCode) {
+		this.developerCode = developerCode;
+	}
+
 	public String getDeveloperFristName() {
 		return developerFristName;
 	}
@@ -79,13 +87,5 @@ public class DeveloperResponseDto {
 		this.userRoleType = userRoleType;
 	}
 
-	public UserPrivilageType getUserPrivilageType() {
-		return userPrivilageType;
-	}
-
-	public void setUserPrivilageType(UserPrivilageType userPrivilageType) {
-		this.userPrivilageType = userPrivilageType;
-	}
-	
 	
 }

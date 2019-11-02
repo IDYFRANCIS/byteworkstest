@@ -1,17 +1,14 @@
 package com.francis.byteworkstest.mail;
 
 import java.io.IOException;
-import java.util.Properties;
+import java.nio.charset.StandardCharsets;
 
-import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
@@ -25,43 +22,29 @@ import freemarker.template.TemplateException;
 @Service
 public class EmailService {
 
-    @Autowired
-    private Configuration freemarkerConfig;
+	 @Autowired
+	    private JavaMailSender emailSender;
 
-    public void sendSimpleMessage(Mail mail) throws MessagingException, IOException, TemplateException {
-    	
-    	//mail username and password
-    	final String username = "260424e5b9dc172bb6aab1267ed0f560";
-		final String password = "46eb58d0ece23c9763ced569fb158378";
-	    
-		//smtp config
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable", "true");
-		props.put("mail.smtp.host", "in-v3.mailjet.com");
-		props.put("mail.smtp.port", "587");
+	    @Autowired
+	    private Configuration freemarkerConfig;
 
-		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
-			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(username, password);
-			}
-		});
-		
-		//Load html template from resource/templates directory
-        freemarkerConfig.setClassForTemplateLoading(this.getClass(), "/templates");
-        Template t = freemarkerConfig.getTemplate(mail.getTemplate());
-        String html = FreeMarkerTemplateUtils.processTemplateIntoString(t, mail.getModel());
+	    public void sendSimpleMessage(Mail mail) throws MessagingException, IOException, TemplateException {
+	        MimeMessage message = emailSender.createMimeMessage();
+	        MimeMessageHelper helper = new MimeMessageHelper(message,
+	                MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
+	                StandardCharsets.UTF_8.name());
 
-		Message message = new MimeMessage(session);
-        message.setFrom(new InternetAddress(username, " "));
-		message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mail.getTo()));
-		message.setSubject(mail.getSubject());
-		message.setContent(html, "text/html");
-		
-		//Send mail
-		Transport.send(message);
-        
-    }
-    
+	        freemarkerConfig.setClassForTemplateLoading(this.getClass(), "/templates");
+	        Template t = freemarkerConfig.getTemplate(mail.getTemplate());
+	        String html = FreeMarkerTemplateUtils.processTemplateIntoString(t, mail.getModel());
+
+	        helper.setTo(mail.getTo());
+	        helper.setText(html, true);
+	        helper.setSubject(mail.getSubject());
+	        helper.setFrom(mail.getFrom());
+
+	        emailSender.send(message);
+	    }
+
 
 }

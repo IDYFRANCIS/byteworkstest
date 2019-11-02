@@ -18,6 +18,10 @@ import com.francis.byteworkstest.service.DeveloperService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
+
+/*
+ * Developer's  account endpoint manager 
+ */
 @Controller
 @RequestMapping(value = "/developer", produces = "application/json")
 @Api(tags = "Developer Management", description = "Endpoint")

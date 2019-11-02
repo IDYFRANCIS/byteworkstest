@@ -60,10 +60,6 @@ public class Order implements Serializable{
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateOrdered;
 	
-//	@Column(name = "date_update", nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-//    @Temporal(TemporalType.TIMESTAMP)
-//    private Date dateUpdatedOrder;
-
 	
 	
 	public long getId() {
@@ -137,13 +133,5 @@ public class Order implements Serializable{
 	public void setDateOrdered(Date dateOrdered) {
 		this.dateOrdered = dateOrdered;
 	}
-
-//	public Date getDateUpdatedOrder() {
-//		return dateUpdatedOrder;
-//	}
-//
-//	public void setDateUpdatedOrder(Date dateUpdatedOrder) {
-//		this.dateUpdatedOrder = dateUpdatedOrder;
-//	}
 
 }

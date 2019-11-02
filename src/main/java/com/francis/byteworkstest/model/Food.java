@@ -24,8 +24,7 @@ public class Food implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name = "food_id", nullable = false, unique = true)
-	private long id;
-	
+	private long id;	
 	
 	@Column(name = "food_code", nullable = false, unique = true)
 	private String foodCode;	

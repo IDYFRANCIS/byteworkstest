@@ -111,6 +111,10 @@ public class ServerletInitilizer extends SpringBootServletInitializer {
         return characterEncodingFilter;
     }
     
+    
+    /*
+     * Data pooling configuration
+     */
     @Bean
     public ComboPooledDataSource dataSource() throws PropertyVetoException {
         ComboPooledDataSource dataSource = new ComboPooledDataSource();

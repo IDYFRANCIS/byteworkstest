@@ -13,7 +13,13 @@
     <div style="background: #fff; width: 96%; max-width: 500px; margin: 2% auto; padding-bottom: 0;">
         
         
-    
+        <table style="width: 100%; padding: 30px;">
+            <tr>
+                <td>
+                
+                </td>
+            </tr>
+            <tr>
 
                 <td colspan="3">
                     <h1 style="font-family: roboto; font-size: 24px; line-height: 28px; font-weight: 500;">
@@ -25,6 +31,13 @@
                 <td colspan="3">
                     <p style="font-family: rubik; font-size: 15px; line-height: 25px; color: #666; letter-spacing: 0.2px;">
                         ${message}
+                    </p>
+                </td>
+            </tr>
+             <tr>
+                <td colspan="3">
+                    <p style="font-family: rubik; font-size: 15px; line-height: 25px; color: #666; letter-spacing: 0.2px;">
+                        ${link}
                     </p>
                 </td>
             </tr>
@@ -49,9 +62,9 @@
             line-height: 19px;
             letter-spacing: -0.002em;
             color: #CFCFCF;
-            ">info@bytworks.com  |  +234 8038686416</p>
+            ">info@byteworks.com  |  +234 8038686416</p>
             <p class="text-center">
-                Thank you
+                
             </p>
         </div>
     </div>

@@ -10,7 +10,6 @@ import com.francis.byteworkstest.enumType.PaymentType;
 public class OrderResponseDto {
 	
 	private String orderNumber;
-//	private String developerCode;
 	PaymentType paymentType;
     DeliveryMethod deliveryType;
     FoodType foodType;
@@ -33,12 +32,7 @@ public class OrderResponseDto {
 	public void setOrderNumber(String orderNumber) {
 		this.orderNumber = orderNumber;
 	}
-//	public String getDeveloperCode() {
-//		return developerCode;
-//	}
-//	public void setDeveloperCode(String developerCode) {
-//		this.developerCode = developerCode;
-//	}
+
 	public PaymentType getPaymentType() {
 		return paymentType;
 	}

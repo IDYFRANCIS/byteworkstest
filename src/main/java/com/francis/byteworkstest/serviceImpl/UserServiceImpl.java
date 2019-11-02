@@ -2,7 +2,9 @@ package com.francis.byteworkstest.serviceImpl;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+
 import com.francis.byteworkstest.constant.AppConstants;
 import com.francis.byteworkstest.constant.ServerResponseStatus;
 import com.francis.byteworkstest.dto.ActivateUserRequest;
@@ -24,6 +27,8 @@ import com.francis.byteworkstest.dto.SignInRequest;
 import com.francis.byteworkstest.dto.SignUpRequest;
 import com.francis.byteworkstest.enumType.UserPrivilageType;
 import com.francis.byteworkstest.enumType.UserRoleType;
+import com.francis.byteworkstest.mail.EmailService;
+import com.francis.byteworkstest.mail.Mail;
 import com.francis.byteworkstest.model.Privilege;
 import com.francis.byteworkstest.model.User;
 import com.francis.byteworkstest.repository.PrivilegeRepository;
@@ -32,6 +37,11 @@ import com.francis.byteworkstest.service.UserService;
 import com.francis.byteworkstest.utility.Utility;
 
 
+/**
+ * User's account implementation
+ * @author Francis
+ *
+ */
 @Service
 @Transactional
 public class UserServiceImpl implements UserService{
@@ -50,10 +60,9 @@ public class UserServiceImpl implements UserService{
 	
 	@Autowired
 	PrivilegeRepository privilegeRepository;
-	
-	
-	//@Autowired
-	//private EmailService emailService;
+		
+	@Autowired
+	private EmailService emailService;
 
     Utility utility = new Utility();
 	
@@ -120,6 +129,10 @@ public class UserServiceImpl implements UserService{
 		
 	}
 
+	
+	/**
+	 * Creating a user to exist on the system
+	 */
 	@Override
 	public ServerResponse create(SignUpRequest request){
 		ServerResponse response = new ServerResponse();
@@ -135,6 +148,7 @@ public class UserServiceImpl implements UserService{
 		String gender = request.getGender() != null ? request.getGender() : request.getGender();
 		String address = request.getAddress() != null ? request.getAddress() : request.getAddress();
 
+		//Validating email input
 		if (email == null || !Utility.isValidEmail(email)) {
 			
 			response.setData("");
@@ -144,6 +158,7 @@ public class UserServiceImpl implements UserService{
             return response;
 		}
 		
+		//Validating phone number inputed
 		if (phone == null || !Utility.isValidPhone(phone)) {
 			response.setData("");
             response.setMessage("Please enter valid phone number");
@@ -153,7 +168,7 @@ public class UserServiceImpl implements UserService{
             return response;
 		}
 		
-		
+		//Validating first name inputed
 		if (firstname == null || firstname.isEmpty()) {
 			response.setData("");
             response.setMessage("Please enter firstname");
@@ -163,6 +178,7 @@ public class UserServiceImpl implements UserService{
             return response;
 		}
 		
+		//Validating last name inputed
 		if (lastname == null || lastname.isEmpty()) {
 			response.setData("");
             response.setMessage("Please enter lastname");
@@ -172,7 +188,7 @@ public class UserServiceImpl implements UserService{
             return response;
 		}
 		
-		
+		//Validating middle name inputed
 		if (middlename == null || middlename.isEmpty()) {
 			response.setData("");
             response.setMessage("Please enter middlename");
@@ -182,6 +198,7 @@ public class UserServiceImpl implements UserService{
             return response;
 		}
 		
+		//Validating gender input
 		if (gender == null || gender.isEmpty()) {
 			response.setData("");
             response.setMessage("Please enter gender");
@@ -191,6 +208,7 @@ public class UserServiceImpl implements UserService{
             return response;
 		}
 		
+		//Validating date of birth input
 		if (dob == null || dob.isEmpty()) {
 			response.setData("");
             response.setMessage("Please enter date of birth");
@@ -200,6 +218,7 @@ public class UserServiceImpl implements UserService{
             return response;
 		}
 		
+		//Validating address input
 		if (address == null || address.isEmpty()) {
 			response.setData("");
             response.setMessage("Please enter address");
@@ -211,7 +230,7 @@ public class UserServiceImpl implements UserService{
 		
 		
 		try {
-			
+			//Checking the database to ensure user is not already existing
 			User requestUser = userRepository.findByPhoneOrEmail(phone, email);
 			
 			if (requestUser != null) {
@@ -223,13 +242,13 @@ public class UserServiceImpl implements UserService{
                 return response;
 			}
 			
-			
+			//Assigning privilege to the new user on the system
 			Privilege isUser = privilegeRepository.findByName(UserPrivilageType.isUser);
 			
 			Collection<Privilege> userPrivileges = new HashSet<>();
 			userPrivileges.add(isUser);
 			
-			
+			//User is created and user code generated for user
 			User = new User();
 			User.setPrivileges(userPrivileges);
 			String activationCode =  Utility.generateRandomString(40);
@@ -247,7 +266,26 @@ public class UserServiceImpl implements UserService{
 			User.setActive(false);
 			User.setActivationCode(activationCode);
 			User.setUserCode("U" + System.currentTimeMillis());
+			
+			//Send mail notification to user to complete registration
+			Mail mail = new Mail();
+            mail.setTo(request.getEmail());
+            mail.setFrom("foodvendor@byteworks.com");
+            mail.setSubject("User Account Registration");
+
+            Map<String, Object> model = new HashMap<String, Object>();
+            {
+	            model.put("salutation", "Dear " + request.getFirstName());
+			}
+            
+            model.put("message", "Welcome to ByteWorks Food Vendor Application and thank you for creating an account. Please confirm your registeration by clicking on the link below to complete your registration process on the system.");
+            model.put("link", appConstants.APP_WEB_URL+ "/user/verification/code/" + activationCode);
+            mail.setModel(model);
+            mail.setTemplate("email_template.ftl");
+            
+            emailService.sendSimpleMessage(mail);
 		
+			//user saved to the database
 			entityManager.persist(User);
 			
 			response.setData(User);
@@ -268,6 +306,9 @@ public class UserServiceImpl implements UserService{
 		
 	}
 	
+	/**
+	 * New user is activated on the system after creation
+	 */
 	@Override
 	public ServerResponse userActivation(ActivateUserRequest request){
 		ServerResponse response = new ServerResponse();
@@ -277,6 +318,7 @@ public class UserServiceImpl implements UserService{
 			String activationCode = request.getActivationCode() != null ? request.getActivationCode() : request.getActivationCode();
 			String password = request.getPassword() != null ? request.getPassword() : request.getPassword();
 			
+			//Checking to ensure user activation code is correct and exist on the system
 			User UserCode = userRepository.findByActivationCode(activationCode);
 
 			if (UserCode == null) {
@@ -289,10 +331,27 @@ public class UserServiceImpl implements UserService{
 				return response;
 			}
 
+			//User is now set to active status on the system
 			User User = entityManager.find(User.class, UserCode.getId());
 			User.setPassword(passwordEncoder.encode(password));
 			User.setActive(true);
 			User.setActivationCode(null);
+			
+			Mail mail = new Mail();
+            mail.setTo(User.getEmail());
+            mail.setFrom("foodvendor@byteworks.com");
+            mail.setSubject("Account verification");
+
+            Map<String, Object> model = new HashMap<String, Object>();
+            model.put("salutation", "Hello " + User.getFirstName());
+            model.put("message", "Your account has been verified. Kindly login into the system.");
+            model.put("link", appConstants.APP_LOGIN_URL+ "/");
+            mail.setModel(model);
+            mail.setTemplate("email_template_link.ftl");
+            emailService.sendSimpleMessage(mail);
+            
+            ResendUserActivationCodeDto dto = new ResendUserActivationCodeDto();
+            dto.setEmail(User.getEmail());
 						
 			
 	        response.setData(User);
@@ -301,10 +360,6 @@ public class UserServiceImpl implements UserService{
             response.setStatus(ServerResponseStatus.OK);
             
 			
-			response.setData("User successfully activated");
-	        response.setMessage("User successfully activated");
-	        response.setSuccess(true);
-	        response.setStatus(ServerResponseStatus.OK);
 			
 		} catch (Exception e) {
 			
@@ -318,12 +373,16 @@ public class UserServiceImpl implements UserService{
 		return response;
 	}
 	
+	
+	/**
+	 * User activation code is re-send to user on second request 
+	 */
 	@Override
 	public ServerResponse reSendUserActivation(ResendUserActivationCodeDto email){
 		ServerResponse response = new ServerResponse();
 		
 		try {
-			
+			//Checking to ensure user email exist on the system before re-sending activation code
 			User UserCode = findByPhoneOrEmail(email.getEmail());
 			
 			if (UserCode == null) {
@@ -341,6 +400,20 @@ public class UserServiceImpl implements UserService{
 			User User = entityManager.find(User.class, UserCode.getId());
 			User.setActivationCode(activationCode);
 			
+			
+			Mail mail = new Mail();
+            mail.setTo(User.getEmail());
+            mail.setFrom("foodvendor@byteworks.com");
+            mail.setSubject("Account verification");
+
+            Map<String, Object> model = new HashMap<String, Object>();
+            model.put("salutation", "Dear " + User.getFirstName());
+            model.put("message", "We received a request to setup your share-portal account, if this is correct, please confirm by clicking on the link below to complete the process on the system. ");
+            model.put("link", "https://api.byteworkstest.com/user/verification/code/" + activationCode);
+            mail.setModel(model);
+            mail.setTemplate("verify.ftl");
+            emailService.sendSimpleMessage(mail);
+			
 			response.setData("");
 	        response.setMessage("Activation code sent successfully");
 	        response.setSuccess(true);
@@ -349,7 +422,7 @@ public class UserServiceImpl implements UserService{
 		} catch (Exception e) {
 			
 			response.setData("");
-	        response.setMessage("Failed to create user User");
+	        response.setMessage("Failed to re-send activation code");
 	        response.setSuccess(false);
 	        response.setStatus(ServerResponseStatus.FAILED);
 	          
@@ -357,6 +430,10 @@ public class UserServiceImpl implements UserService{
 		}
 		return response;
 	}
+	
+	/**
+	 * Re-send user password
+	 */
 	
 	@Override
 	public ServerResponse reSendUserPassword(ResendUserActivationCodeDto email){
@@ -376,10 +453,26 @@ public class UserServiceImpl implements UserService{
 				return response;
 			}
 	        
-			String passwordResetCode =  Utility.generateRandomString(40);
+			String passwordResetCode = Utility.generateRandomString(40);
+			
+			
 
 			User User = entityManager.find(User.class, UserCode.getId());
 			User.setActivationCode(passwordResetCode);
+			
+			
+			Mail mail = new Mail();
+            mail.setTo(User.getEmail());
+            mail.setFrom("");
+            mail.setSubject("Password Recovery");
+
+            Map<String, Object> model = new HashMap<String, Object>();
+            model.put("salutation", "Dear " + User.getFirstName());
+            model.put("message", "We received a request to reset your password <br>Use the verification link below to set up a new password for your account. If you did not request to reset your password, ingnore this email");        
+            model.put("link", appConstants.APP_WEB_URL + "/reset-password/" + passwordResetCode);
+            mail.setModel(model);
+            mail.setTemplate("email_template.ftl");
+            emailService.sendSimpleMessage(mail);
 			
 			response.setData("password reset code sent successfully");
 	        response.setMessage("password reset code sent successfully");
@@ -397,6 +490,10 @@ public class UserServiceImpl implements UserService{
 		}
 		return response;
 	}
+	
+	/**
+	 * Reset user password
+	 */
 	
 	@Override
 	public ServerResponse passwordReset(PasswordRestDto request){
@@ -423,6 +520,19 @@ public class UserServiceImpl implements UserService{
 			User.setActive(true);
 			User.setActivationCode(null);
 			
+			Mail mail = new Mail();
+            mail.setTo(User.getEmail());
+            mail.setFrom("foodvendor@byteworks.com");
+            mail.setSubject("Password Recovery");
+
+            Map<String, Object> model = new HashMap<String, Object>();
+            model.put("salutation", "Hello " + User.getFirstName());
+            model.put("message", "Your password has been reset. Login using the link below");
+            model.put("link", appConstants.APP_WEB_URL);
+            mail.setModel(model);
+            mail.setTemplate("email_template_link.ftl");
+            emailService.sendSimpleMessage(mail);
+			
 			response.setData("");
 	        response.setMessage("User password successfully changed");
 	        response.setSuccess(true);
@@ -440,6 +550,10 @@ public class UserServiceImpl implements UserService{
 		return response;
 	}
 	
+	
+	/**
+	 * Log/authenticate user and generate access token
+	 */
 	@Override
 	public ServerResponse login(SignInRequest request){
 		
@@ -472,6 +586,9 @@ public class UserServiceImpl implements UserService{
 	}
 
 
+	/**
+	 * Fetch all users on the system
+	 */
 	@Override
 	public ServerResponse getAllUsers() {
 		ServerResponse response = new ServerResponse();
@@ -500,113 +617,5 @@ public class UserServiceImpl implements UserService{
 		return response;
 	}
 
-
-	@Override
-	public ServerResponse getUserByUsername(String userCode) {
-		ServerResponse response = new ServerResponse();
-		
-		if (userCode == null || userCode.isEmpty()) {
-			response.setData("");
-	        response.setMessage("User list is empty");
-	        response.setSuccess(false);
-	        response.setStatus(ServerResponseStatus.FAILED);
-	        return response;
-		}
-		
-		try {
-			
-			User User = userRepository.findByUserCode(userCode);
-			
-			if (User == null) {
-				response.setData("");
-		        response.setMessage("User not found");
-		        response.setSuccess(false);
-		        response.setStatus(ServerResponseStatus.FAILED);
-		        return response;
-			}
-			
-			response.setData(User);
-	        response.setMessage("Get data successfully");
-	        response.setSuccess(true);
-	        response.setStatus(ServerResponseStatus.OK);
-		} catch (Exception e) {
-			response.setData("");
-	        response.setMessage("Something went wrong");
-	        response.setSuccess(false);
-	        response.setStatus(ServerResponseStatus.INTERNAL_SERVER_ERROR);
-		}
-		return response;
-	}
-
-
-	
-//	@Override
-//	public ServerResponse sendMail(MailDto request) {
-//		ServerResponse response = new ServerResponse();
-//		
-//		if (request.getEmailAddress() == null || request.getEmailAddress().isEmpty()) {
-//			response.setData("");
-//	        response.setMessage("Please enter email address");
-//	        response.setSuccess(false);
-//	        response.setStatus(ServerResponseStatus.FAILED);
-//	        return response;
-//		}
-//		
-//		if (request.getSubject() == null || request.getSubject().isEmpty()) {
-//			response.setData("");
-//	        response.setMessage("Please enter mail subject");
-//	        response.setSuccess(false);
-//	        response.setStatus(ServerResponseStatus.FAILED);
-//	        return response;
-//		}
-//		
-//		if (request.getSalutation() == null || request.getSalutation().isEmpty()) {
-//			response.setData("");
-//	        response.setMessage("Please enter mail salutation");
-//	        response.setSuccess(false);
-//	        response.setStatus(ServerResponseStatus.FAILED);
-//	        return response;
-//		}
-//		
-//		if (request.getMessageBody() == null || request.getMessageBody().isEmpty()) {
-//			response.setData("");
-//	        response.setMessage("Please enter mail body");
-//	        response.setSuccess(false);
-//	        response.setStatus(ServerResponseStatus.FAILED);
-//	        return response;
-//		}
-//		
-//		try {
-//			
-//			Mail mail = new Mail();
-//            mail.setTo(request.getEmailAddress());
-//            mail.setFrom("no-reply@optimumedu.com");
-//            mail.setSubject(request.getSubject());
-//
-//            Map<String, Object> model = new HashMap<String, Object>();
-//            model.put("salutation", request.getSalutation());
-//            model.put("messageBody", request.getMessageBody());
-//            model.put("link", request.getLink());
-//            mail.setModel(model);
-//            mail.setTemplate("email_template.ftl");
-//            emailService.sendSimpleMessage(mail);
-//            
-//            response.setData("Mail sent");
-//	        response.setMessage("Mail sent");
-//	        response.setSuccess(true);
-//	        response.setStatus(ServerResponseStatus.OK);
-//	        
-//		} catch (Exception e) {
-//			response.setData("");
-//	        response.setMessage("Something went wrong");
-//	        response.setSuccess(false);
-//	        response.setStatus(ServerResponseStatus.INTERNAL_SERVER_ERROR);
-//	        e.printStackTrace();
-//	    	return response;
-//		}
-//		return response;
-//	}
-	
-	
 	
 }

@@ -24,6 +24,10 @@ import com.francis.byteworkstest.repository.PrivilegeRepository;
 import com.francis.byteworkstest.repository.UserRepository;
 
 
+/*
+ * Auto create seed data
+ */
+
 @Component
 @Transactional
 public class InitialDataLoader implements ApplicationListener<ContextRefreshedEvent> {
@@ -60,10 +64,13 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 		hasBeenSetup = true;
 	}
 
+	//Create user privileges 
 	private Privilege createPrivilagesIfNotFound() {
 
 		Privilege privileges;
 		
+		//find privilege if not exists
+		//if not exist save
 		Privilege isUser = privilegeRepository.findByName(UserPrivilageType.isUser);
 		Privilege isDeveloper = privilegeRepository.findByName(UserPrivilageType.isDeveloper);
 		Privilege isVendor = privilegeRepository.findByName(UserPrivilageType.isVendor);
@@ -89,6 +96,13 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 		return null;
 	}
 
+	
+	/*
+	 * Create  Food Vendor who is also a supper admin user
+	 * Find food vendor if not not exists 
+	 * save if not exists
+	 */
+	
 	private User createVendorAccountIfNotFound() {
 
 		User userAccount = userRepository.findByEmail(appConstants.APP_ADMIN_EMAIL);

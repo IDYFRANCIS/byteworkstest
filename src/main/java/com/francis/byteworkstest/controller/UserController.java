@@ -41,6 +41,10 @@ import com.francis.byteworkstest.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
+
+/*
+ * User's account endpoint manager 
+ */
 @Controller
 @RequestMapping(value = "/user", produces = "application/json")
 @Api(tags = "User Account Management", description = "Endpoint")
@@ -227,29 +231,7 @@ public class UserController {
 		return new ResponseEntity<ServerResponse>(response, responseHeaders, ServerResponse.getStatus(response.getStatus()));
 
 	}
-
-
-	@ApiOperation(value = "Get user by user code", response = ServerResponse.class)
-    @RequestMapping(value ="/{userCode}",  method = RequestMethod.GET)
-    @ResponseBody
-    public ResponseEntity<?> getUserByUsername(@RequestHeader("Authorization")  String authorization, @PathVariable("userCode") String userCode){
-		
-		ServerResponse response = new ServerResponse();
-		
-		try {
-			
-			response = userService.getUserByUsername(userCode);
-		
-		} catch (Exception e) {
-			response.setData("An error occured in user account verification" + e.getMessage());
-			response.setMessage("An error occured in user account verification");
-	        response.setSuccess(false);
-            response.setStatus(ServerResponseStatus.FAILED);
-		}
-		
-		return new ResponseEntity<ServerResponse>(response, responseHeaders, ServerResponse.getStatus(response.getStatus()));
-
-	}
+	
 	
 	
 	@Autowired

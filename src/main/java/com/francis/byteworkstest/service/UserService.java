@@ -42,13 +42,7 @@ public interface UserService {
 	
 	public ServerResponse getAllUsers();
 	
-	public ServerResponse getUserByUsername(String username);
 	
-	//public ServerResponse updateAddress(Address address);
 	
-	//public ServerResponse deleteAddress(long id);
-	
-	//ServerResponse sendMail(MailDto request);
-
 	
 }

@@ -16,13 +16,20 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+
+/*
+ * Swagger Configurations
+ */
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
 	
+	
 	 @Autowired
 	 private AppConstants appConstants;
 
+	 
+	//Swagger API configuration
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2).select()
@@ -32,6 +39,8 @@ public class SwaggerConfig {
             .apiInfo(apiInfo());
     }
 
+    
+    //Swagger descriptions
     private ApiInfo apiInfo() {
         return new ApiInfo(appConstants.APP_NAME, appConstants.APP_DESCRIPTION, appConstants.APP_VERSION, "Terms of service", new Contact(appConstants.APP_AUTHOR, appConstants.APP_URL, appConstants.APP_EMAIL), "API License", appConstants.APP_LICENSE_URL,
             Collections.emptyList());
