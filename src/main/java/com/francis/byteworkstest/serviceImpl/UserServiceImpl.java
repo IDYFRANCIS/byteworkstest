@@ -270,7 +270,7 @@ public class UserServiceImpl implements UserService{
 			//Send mail notification to user to complete registration
 			Mail mail = new Mail();
             mail.setTo(request.getEmail());
-            mail.setFrom("foodvendor@byteworks.com");
+            mail.setFrom("idongesitukut25@gmail.com");
             mail.setSubject("User Account Registration");
 
             Map<String, Object> model = new HashMap<String, Object>();
@@ -339,7 +339,7 @@ public class UserServiceImpl implements UserService{
 			
 			Mail mail = new Mail();
             mail.setTo(User.getEmail());
-            mail.setFrom("foodvendor@byteworks.com");
+            mail.setFrom("idongesitukut25@gmail.com");
             mail.setSubject("Account verification");
 
             Map<String, Object> model = new HashMap<String, Object>();
@@ -403,7 +403,7 @@ public class UserServiceImpl implements UserService{
 			
 			Mail mail = new Mail();
             mail.setTo(User.getEmail());
-            mail.setFrom("foodvendor@byteworks.com");
+            mail.setFrom("idongesitukut25@gmail.com");
             mail.setSubject("Account verification");
 
             Map<String, Object> model = new HashMap<String, Object>();
@@ -463,7 +463,7 @@ public class UserServiceImpl implements UserService{
 			
 			Mail mail = new Mail();
             mail.setTo(User.getEmail());
-            mail.setFrom("foodvendor@byteworks.com");
+            mail.setFrom("idongesitukut25@gmail.com");
             mail.setSubject("Password Recovery");
 
             Map<String, Object> model = new HashMap<String, Object>();
@@ -522,7 +522,7 @@ public class UserServiceImpl implements UserService{
 			
 			Mail mail = new Mail();
             mail.setTo(User.getEmail());
-            mail.setFrom("foodvendor@byteworks.com");
+            mail.setFrom("idongesitukut25@gmail.com");
             mail.setSubject("Password Recovery");
 
             Map<String, Object> model = new HashMap<String, Object>();
