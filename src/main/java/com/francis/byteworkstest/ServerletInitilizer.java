@@ -55,8 +55,8 @@ public class ServerletInitilizer extends SpringBootServletInitializer {
     @Value("${spring.datasource.password}")
     private String password;
 
-    @Value("${spring.datasource.driver-class-name}")
-    private String driverClassName;
+//    @Value("${spring.datasource.driver-class-name}")
+//    private String driverClassName;
 
     @Value("${spring.datasource.commit-on-close}")
     private boolean commitOnClose;
@@ -127,7 +127,7 @@ public class ServerletInitilizer extends SpringBootServletInitializer {
         dataSource.setMaxIdleTime(maxIdleTime);
         dataSource.setJdbcUrl(url);
         dataSource.setPassword(password);
-        dataSource.setDriverClass(driverClassName);
+    //    dataSource.setDriverClass(driverClassName);
         dataSource.setUser(username);
         dataSource.setInitialPoolSize(initialSize);
         dataSource.setAutoCommitOnClose(commitOnClose);
