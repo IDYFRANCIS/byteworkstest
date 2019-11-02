@@ -33,9 +33,8 @@ public class ByteworkstestApplication {
         return new JwtTokenStore(accessTokenConverter());
     }
 
-   
-    @Bean
     @Primary
+    @Bean
     public DefaultTokenServices tokenServices() {
         DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
         defaultTokenServices.setTokenStore(tokenStore());
