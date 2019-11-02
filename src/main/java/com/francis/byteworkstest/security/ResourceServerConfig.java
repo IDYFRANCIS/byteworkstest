@@ -34,8 +34,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
             .authorizeRequests()
             .antMatchers("/**/actuator/**", "/**/api-docs/**", "/**/swagger-ui.html", "/**/webjars/**", "/**/api/v1/", 
             		"/**/swagger-resources/**", "/**/docs/**", "/**/health/**").permitAll()
-            .antMatchers(HttpMethod.POST, "/**/user/**", "/**/developer/**", "/**/order/**", "/**/image/**", "/**/transation/**").permitAll()
-            .antMatchers(HttpMethod.GET, "/**/user/**", "/**/developer/**", "/**/order/item/**", "/**/class/**").permitAll()
+            .antMatchers(HttpMethod.POST, "/**/user/**", "/**/developer/**", "/**/order/**").permitAll()
+            .antMatchers(HttpMethod.GET, "/**/user/**", "/**/developer/**", "/**/order/**").permitAll()
             .anyRequest()
             .authenticated();
     }

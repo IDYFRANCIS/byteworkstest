@@ -65,8 +65,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         try {
 
             if (resourcePath.contains("/api-docs") || resourcePath.contains("/actuator") || resourcePath.contains("/health") || resourcePath.contains("/swagger-ui.html") || resourcePath.contains("/webjars") || resourcePath.equalsIgnoreCase("/api/v1")
-                || resourcePath.contains("/swagger-resources") || resourcePath.contains("/docs") || resourcePath.contains("/user") || resourcePath.contains("/developer") || resourcePath.contains("/order") || resourcePath.contains("/invoice")
-                || resourcePath.contains("/transation") || resourcePath.contains("/school") || resourcePath.contains("/admission") || resourcePath.contains("/income") || resourcePath.contains("/class")) {
+                || resourcePath.contains("/swagger-resources") || resourcePath.contains("/docs") || resourcePath.contains("/user") || resourcePath.contains("/developer") || resourcePath.contains("/order")) {
                 logger.info("REQUEST IS FOR API DOCS");
                 chain.doFilter(request, response);
                 return;
