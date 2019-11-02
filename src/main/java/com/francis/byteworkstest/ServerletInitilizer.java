@@ -125,6 +125,10 @@ public class ServerletInitilizer extends SpringBootServletInitializer {
         dataSource.setMaxStatements(maxStatements);
         dataSource.setMaxStatementsPerConnection(maxStatementsPerConnection);
         dataSource.setMaxIdleTime(maxIdleTime);
+        dataSource.setJdbcUrl(url);
+        dataSource.setPassword(password);
+        dataSource.setDriverClass(driverClassName);
+        dataSource.setUser(username);
         dataSource.setInitialPoolSize(initialSize);
         dataSource.setAutoCommitOnClose(commitOnClose);
         dataSource.setCheckoutTimeout(checkoutTimeout);
@@ -134,10 +138,8 @@ public class ServerletInitilizer extends SpringBootServletInitializer {
         dataSource.setMaxIdleTimeExcessConnections(maxIdleTimeExcessConnections);
         dataSource.setTestConnectionOnCheckin(testConnectionOnCheckin);
         dataSource.setTestConnectionOnCheckout(testConnectionOnCheckout);
-        dataSource.setJdbcUrl(url);
-        dataSource.setPassword(password);
-        dataSource.setUser(username);
-        dataSource.setDriverClass(driverClassName);
+        
+        
         return dataSource;
     }
 
