@@ -16,7 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.francis.byteworkstest.constant.AppConstants;
-import com.francis.byteworkstest.enumType.UserPrivilageType;
+import com.francis.byteworkstest.enumType.UserPrivilegeType;
 import com.francis.byteworkstest.enumType.UserRoleType;
 import com.francis.byteworkstest.model.Privilege;
 import com.francis.byteworkstest.model.User;
@@ -71,25 +71,25 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 		
 		//find privilege if not exists
 		//if not exist save
-		Privilege isUser = privilegeRepository.findByName(UserPrivilageType.isUser);
-		Privilege isDeveloper = privilegeRepository.findByName(UserPrivilageType.isDeveloper);
-		Privilege isVendor = privilegeRepository.findByName(UserPrivilageType.isVendor);
+		Privilege isUser = privilegeRepository.findByName(UserPrivilegeType.isUser);
+		Privilege isDeveloper = privilegeRepository.findByName(UserPrivilegeType.isDeveloper);
+		Privilege isVendor = privilegeRepository.findByName(UserPrivilegeType.isVendor);
 		
 		
 		if (isUser == null) {
 			privileges = new Privilege();
-			privileges.setName(UserPrivilageType.isUser);
+			privileges.setName(UserPrivilegeType.isUser);
 			privilegeRepository.save(privileges);
 		}
 
 		if (isDeveloper == null) {
 			privileges = new Privilege();
-			privileges.setName(UserPrivilageType.isDeveloper);
+			privileges.setName(UserPrivilegeType.isDeveloper);
 			privilegeRepository.save(privileges);
 		}
 		if (isVendor == null) {
 			privileges = new Privilege();
-			privileges.setName(UserPrivilageType.isVendor);
+			privileges.setName(UserPrivilegeType.isVendor);
 			privilegeRepository.save(privileges);
 		}
 
@@ -106,7 +106,7 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 	private User createVendorAccountIfNotFound() {
 
 		User userAccount = userRepository.findByEmail(appConstants.APP_ADMIN_EMAIL);
-		Privilege isVendor = privilegeRepository.findByName(UserPrivilageType.isVendor);
+		Privilege isVendor = privilegeRepository.findByName(UserPrivilegeType.isVendor);
 		
 		
 		Collection<Privilege> vendorPrivileges = new HashSet<>();
@@ -127,7 +127,7 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 		user.setLastName(appConstants.APP_DEFAULT_ADMIN_NAME);
 		user.setPassword(passwordEncoder.encode(appConstants.APP_ADMIN_PASSWORD));
 		user.setRole(UserRoleType.VENDOR);
-		user.setPrivileges(vendorPrivileges);
+		user.setPrivilegesAssigned(vendorPrivileges);
 
 		logger.info("Vendor Account " + user.getEmail());
 		

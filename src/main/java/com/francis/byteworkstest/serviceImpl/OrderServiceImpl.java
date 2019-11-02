@@ -227,7 +227,7 @@ public class OrderServiceImpl implements OrderService{
 			
 			Mail mail = new Mail();
             mail.setTo(appConstants.APP_ADMIN_EMAIL);
-            mail.setFrom("idongesitukut25@gmail.com");
+            mail.setFrom("foodvendor@byteworks.com");
             mail.setSubject("Food Order");
 
             Map<String, Object> model = new HashMap<String, Object>();
@@ -235,7 +235,7 @@ public class OrderServiceImpl implements OrderService{
 	            model.put("salutation", "Dear " + appConstants.APP_DEFAULT_ADMIN_NAME);
 
 			}
-            model.put("message", "Order Notification from ByteWorks Food Vendor App, An order with order number" + orderCode + "has been placed by a developer for food with order number: <b>" + orderCode + "</b>  Kindly ensure that this order is suplied to the developer with the specified parameters");
+            model.put("message", "Order Notification from ByteWorks Food Vendor App. An order with order number: <b>" + orderCode + "</b> has been placed by a developer, Kindly ensure that this order is suplied to the developer with the specified parameters");
          //  model.put("link", appConstants.APP_WEB_URL + "/order/orderCode/" + orderCode);
             mail.setModel(model);
             mail.setTemplate("verify.ftl");

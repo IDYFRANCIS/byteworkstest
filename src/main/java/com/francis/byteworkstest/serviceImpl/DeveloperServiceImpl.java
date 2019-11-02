@@ -10,17 +10,15 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import com.francis.byteworkstest.constant.ServerResponseStatus;
 import com.francis.byteworkstest.dto.DeveloperDto;
 import com.francis.byteworkstest.dto.DeveloperResponseDto;
 import com.francis.byteworkstest.dto.ServerResponse;
-import com.francis.byteworkstest.enumType.UserPrivilageType;
+import com.francis.byteworkstest.enumType.UserPrivilegeType;
 import com.francis.byteworkstest.enumType.UserRoleType;
 import com.francis.byteworkstest.mail.EmailService;
 import com.francis.byteworkstest.mail.Mail;
 import com.francis.byteworkstest.model.Developer;
-import com.francis.byteworkstest.model.Order;
 import com.francis.byteworkstest.model.Privilege;
 import com.francis.byteworkstest.model.User;
 import com.francis.byteworkstest.repository.DeveloperRepository;
@@ -132,7 +130,7 @@ public class DeveloperServiceImpl implements DeveloperService{
 			}
 			
 			//Assigning user the privileges of a developer
-			Privilege isDeveloper = privilegeRepo.findByName(UserPrivilageType.isDeveloper);
+			Privilege isDeveloper = privilegeRepo.findByName(UserPrivilegeType.isDeveloper);
 		
 			
 			Collection<Privilege> developerPrivileges = new HashSet<>();

@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "food")
+@Table(name = "foods")
 public class Food implements Serializable{
 	
 	

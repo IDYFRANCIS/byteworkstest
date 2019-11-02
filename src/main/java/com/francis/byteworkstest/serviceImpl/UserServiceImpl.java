@@ -25,7 +25,7 @@ import com.francis.byteworkstest.dto.ResendUserActivationCodeDto;
 import com.francis.byteworkstest.dto.ServerResponse;
 import com.francis.byteworkstest.dto.SignInRequest;
 import com.francis.byteworkstest.dto.SignUpRequest;
-import com.francis.byteworkstest.enumType.UserPrivilageType;
+import com.francis.byteworkstest.enumType.UserPrivilegeType;
 import com.francis.byteworkstest.enumType.UserRoleType;
 import com.francis.byteworkstest.mail.EmailService;
 import com.francis.byteworkstest.mail.Mail;
@@ -243,14 +243,14 @@ public class UserServiceImpl implements UserService{
 			}
 			
 			//Assigning privilege to the new user on the system
-			Privilege isUser = privilegeRepository.findByName(UserPrivilageType.isUser);
+			Privilege isUser = privilegeRepository.findByName(UserPrivilegeType.isUser);
 			
 			Collection<Privilege> userPrivileges = new HashSet<>();
 			userPrivileges.add(isUser);
 			
 			//User is created and user code generated for user
 			User = new User();
-			User.setPrivileges(userPrivileges);
+			User.setPrivilegesAssigned(userPrivileges);
 			String activationCode =  Utility.generateRandomString(40);
 
 			User.setRole(UserRoleType.USER);
@@ -354,7 +354,7 @@ public class UserServiceImpl implements UserService{
             dto.setEmail(User.getEmail());
 						
 			
-	        response.setData(User);
+	        response.setData("User account successfully activated");
             response.setMessage("User successfully created");
             response.setSuccess(true);
             response.setStatus(ServerResponseStatus.OK);
@@ -463,7 +463,7 @@ public class UserServiceImpl implements UserService{
 			
 			Mail mail = new Mail();
             mail.setTo(User.getEmail());
-            mail.setFrom("");
+            mail.setFrom("foodvendor@byteworks.com");
             mail.setSubject("Password Recovery");
 
             Map<String, Object> model = new HashMap<String, Object>();

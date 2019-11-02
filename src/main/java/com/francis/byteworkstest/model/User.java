@@ -85,7 +85,7 @@ public class User implements Serializable{
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_privileges", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"), inverseJoinColumns = @JoinColumn(name = "privilege_id", referencedColumnName = "privilege_id"))
-	private Collection<Privilege> privileges;
+	private Collection<Privilege> privilegesAssigned;
 
 
 
@@ -209,24 +209,13 @@ public class User implements Serializable{
 		this.role = role;
 	}
 
-	public Collection<Privilege> getPrivileges() {
-		return privileges;
+	public Collection<Privilege> getPrivilegesAssigned() {
+		return privilegesAssigned;
 	}
 
-	public void setPrivileges(Collection<Privilege> privileges) {
-		this.privileges = privileges;
+	public void setPrivilegesAssigned(Collection<Privilege> privilegesAssigned) {
+		this.privilegesAssigned = privilegesAssigned;
 	}
-
-//	@JsonIgnore
-//	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-//    @JoinTable(name = "school_user", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"), inverseJoinColumns = @JoinColumn(name = "school_id", referencedColumnName = "school_id"))
-//	private Set<School> schools;
-//	
-//	@OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
-//	private ImageStore images;
-//	
-//	@OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
-//	private DefaultSchool school;
 
 	
 }

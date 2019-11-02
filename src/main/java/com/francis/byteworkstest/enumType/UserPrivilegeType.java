@@ -6,6 +6,6 @@ package com.francis.byteworkstest.enumType;
  * @author Francis
  *
  */
-public enum UserPrivilageType {
+public enum UserPrivilegeType {
 	isDeveloper, isVendor, isUser
 }

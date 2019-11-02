@@ -15,11 +15,11 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.francis.byteworkstest.enumType.UserPrivilageType;
+import com.francis.byteworkstest.enumType.UserPrivilegeType;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "privilege")
+@Table(name = "privileges")
 public class Privilege implements Serializable{
 
 	@JsonIgnore
@@ -29,38 +29,15 @@ public class Privilege implements Serializable{
 	private long id;
 
 	@Column(name = "name")
-    private UserPrivilageType name;
+    private UserPrivilegeType name;
 
 	@JsonIgnore
 	@LazyCollection(LazyCollectionOption.FALSE)
-    @ManyToMany(mappedBy = "privileges") 
+    @ManyToMany(mappedBy = "privilegesAssigned") 
 	private Collection<User> users;
 
 	
-//	public long getId() {
-//		return id;
-//	}
-//
-//	public void setId(long id) {
-//		this.id = id;
-//	}
-//
-//	public UserPrivilageType getName() {
-//		return name;
-//	}
-//
-//	public void setName(UserPrivilageType name) {
-//		this.name = name;
-//	}
-//
-//	public Collection<User> getUsers() {
-//		return users;
-//	}
-//
-//	public void setUsers(Collection<User> users) {
-//		this.users = users;
-//	}
-    
+
     public Privilege() {
     }
 
@@ -72,18 +49,17 @@ public class Privilege implements Serializable{
 		return id;
 	}
 
-
 	public void setId(long id) {
 		this.id = id;
 	}
 
-	public UserPrivilageType getName() {
-        return name;
-    }
+	public UserPrivilegeType getName() {
+		return name;
+	}
 
-    public void setName(UserPrivilageType name) {
-        this.name = name;
-    }
+	public void setName(UserPrivilegeType name) {
+		this.name = name;
+	}
 
 	public Collection<User> getUsers() {
 		return users;

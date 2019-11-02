@@ -84,8 +84,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
             .userDetailsService(userDetailsService);
     }
 
-    @Primary
+    
     @Bean
+    @Primary
     public AuthorizationServerTokenServices tokenServices() {
         DefaultTokenServices tokenServices = new DefaultTokenServices();
         tokenServices.setTokenEnhancer(tokenEnhancer());
