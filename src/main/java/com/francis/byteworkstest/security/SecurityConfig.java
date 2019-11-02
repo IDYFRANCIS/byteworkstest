@@ -25,7 +25,10 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    
+	@Value("${security.signing-key}")
+    private String SIGNING_KEY;
+
+	
     @Value("${security.security-realm}")
     private String SECURITY_REALM;
 
@@ -73,6 +76,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
-  
+    @Bean
+	  public JwtAccessTokenConverter accessTokenConverter() {
+	      JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+	      converter.setSigningKey(SIGNING_KEY);
+	      return converter;
+	  }
+
+	  @Bean
+	  public TokenStore tokenStore() {
+	      return new JwtTokenStore(accessTokenConverter());
+	  }
+
+	  @Primary
+	  @Bean
+	  public DefaultTokenServices tokenServices() {
+	      DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
+	      defaultTokenServices.setTokenStore(tokenStore());
+	      defaultTokenServices.setSupportRefreshToken(true);
+	      return defaultTokenServices;
+	  }
     
 }
