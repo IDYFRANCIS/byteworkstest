@@ -7,7 +7,7 @@
     host: smtp.gmail.com
     username: idongesitukut25@gmail.com
     password: mariner25
-    port: 465
+    port: 587
     properties:
       mail:
         smtp:
@@ -16,7 +16,7 @@
           starttls:
               enable: true
           socketFactory:
-            port: 465
+            port: 587
             class: javax.net.ssl.SSLSocketFactory
             fallback: false
     protocol: smtp
