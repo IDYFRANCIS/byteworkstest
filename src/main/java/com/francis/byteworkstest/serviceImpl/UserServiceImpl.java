@@ -133,7 +133,7 @@ public class UserServiceImpl implements UserService{
 	/**
 	 * Creating a user to exist on the system
 	 */
-	@SuppressWarnings("static-access")
+	
 	@Override
 	public ServerResponse create(SignUpRequest request){
 		ServerResponse response = new ServerResponse();
