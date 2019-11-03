@@ -1,8 +1,13 @@
 package com.francis.byteworkstest.serviceImpl;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -14,6 +19,7 @@ import com.francis.byteworkstest.constant.AppConstants;
 import com.francis.byteworkstest.constant.ServerResponseStatus;
 import com.francis.byteworkstest.dto.OrderDto;
 import com.francis.byteworkstest.dto.OrderResponseDto;
+import com.francis.byteworkstest.dto.OrderResponseDto1;
 import com.francis.byteworkstest.dto.ServerResponse;
 import com.francis.byteworkstest.enumType.DeliveryMethod;
 import com.francis.byteworkstest.enumType.FoodType;
@@ -84,8 +90,8 @@ public class OrderServiceImpl implements OrderService{
 		return null;
 	}
 
-	@Override
-	public Order findByOrderNumber(String orderNumber) {
+	  @Override
+	  public Order findByOrderNumber(String orderNumber) {
 
 		try {
 			
@@ -100,9 +106,10 @@ public class OrderServiceImpl implements OrderService{
 
 
 	
-	//Creating an order for food
-	@Override
-	public ServerResponse createOrder(OrderDto request, PaymentType paymentType, FoodType foodType,
+	   //Creating an order for food
+	   @SuppressWarnings("deprecation")
+	   @Override
+	   public ServerResponse createOrder(OrderDto request, PaymentType paymentType, FoodType foodType,
 			DeliveryMethod deliverType) {
 		
         ServerResponse response = new ServerResponse();
@@ -162,7 +169,7 @@ public class OrderServiceImpl implements OrderService{
             return response;
 		}
 		
-	
+		
 		try {
 			//Validating and confirming that user is a registered developer on the system
 			Developer confirmDeveloper = developerRepo.findByDeveloperCode(request.getDeveloperCode());
@@ -188,7 +195,7 @@ public class OrderServiceImpl implements OrderService{
 			order.setDeliveryType(deliverType);
 			order.setPaymentType(paymentType);
 			order.setQuantity(request.getQuantity());
-			order.setDateOrdered(order.getDateOrdered());
+			order.setDateOrdered(new Date());
 			
 			//Logic to calculate cost of food ordered
 			if (foodType.equals(FoodType.FRIED_RICE)) {
@@ -223,27 +230,47 @@ public class OrderServiceImpl implements OrderService{
 				order.setAmount(550 * request.getQuantity());
 			}
 			
+			if (foodType.equals(FoodType.PEPPER_RICE)) {
+				order.setAmount(650 * request.getQuantity());
+			}
+			
 			//send mail notification to food vendor on order placed
 			
-			Mail mail = new Mail();
+			  Mail mail = new Mail();
             mail.setTo(appConstants.APP_ADMIN_EMAIL);
-            mail.setFrom("foodvendor@byteworks.com");
+            mail.setFrom("idongesitukut25@gmail.com");
             mail.setSubject("Food Order");
 
             Map<String, Object> model = new HashMap<String, Object>();
-             {
-	            model.put("salutation", "Dear " + appConstants.APP_DEFAULT_ADMIN_NAME);
-
-			}
-            model.put("message", "Order Notification from ByteWorks Food Vendor App. An order with order number: <b>" + orderCode + "</b> has been placed by a developer, Kindly ensure that this order is suplied to the developer with the specified parameters");
-         //  model.put("link", appConstants.APP_WEB_URL + "/order/orderCode/" + orderCode);
+             
+            model.put("title", "Dear " + appConstants.APP_DEFAULT_ADMIN_NAME);
+            model.put("food", order.getFoodType());
+            model.put("quantity", request.getQuantity());
+            model.put("deliveryMethod", order.getDeliveryType());
+            model.put("paymentType", order.getPaymentType());
+            model.put("amount", order.getAmount());
+            model.put("address", order.getDeveloper().getUser().getAddress());
+            model.put("phone", order.getDeveloper().getUser().getPhone());
+			model.put("orderDate", order.getDateOrdered().toLocaleString());
+            model.put("content", "Order Notification from ByteWorks Food Vendor App. An order with order number: <b>" + orderCode + "</b> has been placed by a developer, Kindly ensure that this order is suplied to the developer with the specified parameters");
             mail.setModel(model);
-            mail.setTemplate("verify.ftl");
+            mail.setTemplate("order_template.ftl");
             
+            emailService.sendSimpleMessage(mail);
+            
+            model.put("content", "Hi, you placed an order to buy food from our platform, below are the details of your order.");
+            model.put("title", "Dear " + order.getDeveloper().getUser().getFirstName());
+            mail.setModel(model);
+            mail.setTo(order.getDeveloper().getUser().getEmail());
             emailService.sendSimpleMessage(mail);
 			
 			//Order saved to database
 			orderRepo.save(order);
+			
+			 SimpleDateFormat sdf = new SimpleDateFormat("EE MMM dd HH:mm:ss z yyyy", Locale.getDefault());
+			 Date parsedDate = sdf.parse(String.valueOf(order.getDateOrdered()));
+			 SimpleDateFormat print = new SimpleDateFormat("MMM d, yyyy HH:mm:ss");
+			 
 			
 			//Order response details to be displayed or printed
 			OrderResponseDto dto = new OrderResponseDto();
@@ -259,7 +286,7 @@ public class OrderServiceImpl implements OrderService{
 			dto.setEmail(confirmDeveloper.getUser().getEmail());
 			dto.setPhone(confirmDeveloper.getUser().getPhone());
 			dto.setAddress(confirmDeveloper.getUser().getAddress());
-			dto.setDateOrdered(order.getDateOrdered());
+			dto.setDateOrdered(print.format(parsedDate));
 			dto.setAmount(order.getAmount());
 			
 			response.setData(dto);
@@ -268,7 +295,7 @@ public class OrderServiceImpl implements OrderService{
 			response.setStatus(ServerResponseStatus.OK);
 			
 			
-		}catch(Exception e) {
+	   	}catch(Exception e) {
 			e.printStackTrace();
 			response.setData("");
 	        response.setMessage("Developer order was not placed");
@@ -285,7 +312,6 @@ public class OrderServiceImpl implements OrderService{
 	/**
 	 * Fetching order through order number
 	 */
-	
 	@Override
 	public ServerResponse getOrderByOrderNumber(String orderNumber) {
 
@@ -313,8 +339,9 @@ public class OrderServiceImpl implements OrderService{
 	            return response;
 			}
 			
+			
 			//If order exist, then order is fetched and displayed 
-			OrderResponseDto dto1 = new OrderResponseDto();
+			OrderResponseDto1 dto1 = new OrderResponseDto1();
 			dto1.setOrderNumber(orders.getOrderNumber());
 			dto1.setFoodType(orders.getFoodType());
 			dto1.setPaymentType(orders.getPaymentType());
@@ -351,8 +378,7 @@ public class OrderServiceImpl implements OrderService{
 	
 	/**
 	 * Fetching orders with a particular payment type
-	 */
-	
+	 */	
 	@Override
 	public ServerResponse getOrderByPaymentType(PaymentType paymentType) {
 
@@ -401,7 +427,6 @@ public class OrderServiceImpl implements OrderService{
 	/**
 	 * Fetching orders with a particular food type
 	 */
-	
 	@Override
 	public ServerResponse getOrderByFoodType(FoodType foodType) {
 
@@ -420,7 +445,6 @@ public class OrderServiceImpl implements OrderService{
 			//Checking the database to ensure orders with selected food type exist
 			Collection<Order> food = orderRepo.findByFoodType(foodType);
 			
-			foodType.name();
 			if (food.size() < 1) {
 				response.setData("");
 	            response.setMessage("No order found for selected food type");
@@ -451,7 +475,6 @@ public class OrderServiceImpl implements OrderService{
 	/**
 	 * Fetching orders with a particular delivery method
 	 */
-	
 	@Override
 	public ServerResponse getOrderByDeliveryType(DeliveryMethod deliveryType) {
 
@@ -470,7 +493,6 @@ public class OrderServiceImpl implements OrderService{
    			//Checking the database to ensure orders with selected delivery type exist
         	   Collection<Order> delivery = orderRepo.findByDeliveryType(deliveryType);
  
-        	   deliveryType.toString();
         	   if (delivery.size() < 1) {
    				response.setData("");
    	            response.setMessage("No order found for selected delivery method");
@@ -501,8 +523,7 @@ public class OrderServiceImpl implements OrderService{
 	/**
 	 *  Fetching all existing orders on the system 
 	 */
-	
-	      @Override
+          @Override
 	      public ServerResponse getAllOrders() {
 
 		   ServerResponse response = new ServerResponse();
@@ -528,9 +549,7 @@ public class OrderServiceImpl implements OrderService{
 		        response.setSuccess(false);
 		        response.setStatus(ServerResponseStatus.INTERNAL_SERVER_ERROR);
 			}
-			return response;
-		   
+			return response;	   
 	  }
-	   
-	   	
-}
+	   	   	
+ }

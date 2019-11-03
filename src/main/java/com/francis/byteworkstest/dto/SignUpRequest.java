@@ -1,6 +1,5 @@
 package com.francis.byteworkstest.dto;
 
-// com.bizzdeskgroup.optimumeducation.EnumType.AccountType;
 
 public class SignUpRequest {
 	

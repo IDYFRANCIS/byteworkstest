@@ -1,15 +1,12 @@
 package com.francis.byteworkstest.dto;
 
-
-
-
 import java.util.Date;
 
 import com.francis.byteworkstest.enumType.DeliveryMethod;
 import com.francis.byteworkstest.enumType.FoodType;
 import com.francis.byteworkstest.enumType.PaymentType;
 
-public class OrderResponseDto {
+public class OrderResponseDto1 {
 	
 	private String orderNumber;
 	PaymentType paymentType;
@@ -24,8 +21,7 @@ public class OrderResponseDto {
     private String address;
     private String email;
     private String gender;
-    private String dateOrdered;
-    
+    private Date dateOrdered;
     
     
 	public String getOrderNumber() {
@@ -106,12 +102,12 @@ public class OrderResponseDto {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-	public String getDateOrdered() {
+	public Date getDateOrdered() {
 		return dateOrdered;
 	}
-	public void setDateOrdered(String dateOrdered) {
+	public void setDateOrdered(Date dateOrdered) {
 		this.dateOrdered = dateOrdered;
 	}
-	
-	    
+    
+    
 }

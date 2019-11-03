@@ -133,6 +133,7 @@ public class UserServiceImpl implements UserService{
 	/**
 	 * Creating a user to exist on the system
 	 */
+	@SuppressWarnings("static-access")
 	@Override
 	public ServerResponse create(SignUpRequest request){
 		ServerResponse response = new ServerResponse();
@@ -255,12 +256,12 @@ public class UserServiceImpl implements UserService{
 
 			User.setRole(UserRoleType.USER);
 			User.setEmail(email);
-			User.setFirstName(firstname);
-			User.setLastName(lastname);
-			User.setAddress(address);
+			User.setFirstName(utility.capitalizeFirstLetter(firstname));
+			User.setLastName(utility.capitalizeFirstLetter(lastname));
+			User.setAddress(utility.capitalizeFirstLetter(address));
 			User.setDateOfBirth(dob);
-			User.setMiddleName(middlename);
-			User.setGender(gender);
+			User.setMiddleName(utility.capitalizeFirstLetter(middlename));
+			User.setGender(utility.capitalizeFirstLetter(gender));
 			User.setPhone(phone);
 			User.setDateCreated(new Date());
 			User.setActive(false);
@@ -284,6 +285,7 @@ public class UserServiceImpl implements UserService{
             mail.setTemplate("email_template.ftl");
             
             emailService.sendSimpleMessage(mail);
+            
 		
 			//user saved to the database
 			entityManager.persist(User);
@@ -567,7 +569,7 @@ public class UserServiceImpl implements UserService{
 			logger.info(authorization);
 			request.setGrant_type(appConstants.GRANT_TYPE);
 			
-			System.out.println("this is to check for request" + request);
+		//	System.out.println("this is to check for request" + request);
 
 			
 			//send login request
