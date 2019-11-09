@@ -326,7 +326,6 @@ public class OrderServiceImpl implements OrderService{
             return response;
 		}
 		
-		
 		try {
 			//Confirming that order number inputed exist on the system
 			Order orders = orderRepo.findByOrderNumber(orderNumber);
@@ -338,9 +337,8 @@ public class OrderServiceImpl implements OrderService{
 	            response.setStatus(ServerResponseStatus.OK);
 	            return response;
 			}
-			
-			
-			//If order exist, then order is fetched and displayed 
+				
+			//If order exist, then order is fetched and displayed for user to see
 			OrderResponseDto1 dto1 = new OrderResponseDto1();
 			dto1.setOrderNumber(orders.getOrderNumber());
 			dto1.setFoodType(orders.getFoodType());
