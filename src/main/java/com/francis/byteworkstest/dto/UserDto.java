@@ -5,7 +5,6 @@ import com.francis.byteworkstest.enumType.UserRoleType;
 
 
 
-
 public class UserDto {
 	
 	private String userCode = "";	
@@ -16,7 +15,6 @@ public class UserDto {
     private String phone = "";
     private String activationCode = "";
     private boolean active;
-  //  private Date dateCreated;
 	private UserRoleType role;
 	
 	
