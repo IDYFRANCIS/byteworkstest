@@ -1,10 +1,6 @@
 package com.francis.byteworkstest.dto;
 
 
-
-
-
-
 import com.francis.byteworkstest.enumType.DeliveryMethod;
 import com.francis.byteworkstest.enumType.FoodType;
 import com.francis.byteworkstest.enumType.PaymentType;
