@@ -46,7 +46,7 @@
                     font-size: 16px;
                     line-height: 19px;
                     letter-spacing: 0.002em;"
-                    >Best regards.</b>
+                    >Regards.</b>
                 </td>
             </tr>
         </table>
@@ -61,7 +61,7 @@
             line-height: 19px;
             letter-spacing: -0.002em;
             color: #CFCFCF;
-            ">info@afriprud.com  |  +234 8038686416</p>
+            ">info@afrancisgroup.com  |  +234 8038686416</p>
             <p class="text-center">
                 
             </p>

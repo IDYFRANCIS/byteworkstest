@@ -199,7 +199,7 @@ public class OrderServiceImpl implements OrderService{
 			
 			//Logic to calculate cost of food ordered
 			if (foodType.equals(FoodType.FRIED_RICE)) {
-				order.setAmount(500 * request.getQuantity());
+				order.setAmount(100 * request.getQuantity());
 			}
 			
 			if (foodType.equals(FoodType.GARRI_AND_EGGUSUSOUP)) {
@@ -236,7 +236,7 @@ public class OrderServiceImpl implements OrderService{
 			
 			//send mail notification to food vendor on order placed
 			
-			  Mail mail = new Mail();
+			Mail mail = new Mail();
             mail.setTo(appConstants.APP_ADMIN_EMAIL);
             mail.setFrom("idongesitukut25@gmail.com");
             mail.setSubject("Food Order");
@@ -252,7 +252,7 @@ public class OrderServiceImpl implements OrderService{
             model.put("address", order.getDeveloper().getUser().getAddress());
             model.put("phone", order.getDeveloper().getUser().getPhone());
 			model.put("orderDate", order.getDateOrdered().toLocaleString());
-            model.put("content", "Order Notification from ByteWorks Food Vendor App. An order with order number: <b>" + orderCode + "</b> has been placed by a developer, Kindly ensure that this order is suplied to the developer with the specified parameters");
+            model.put("content", "Order Notification from ByteWorks Food Vendor App. An order with order number: <b>" + orderCode + "</b> has been placed by <b>" + order.getDeveloper().getUser().getFirstName()+  "</b> , Kindly ensure that this order is suplied to the developer with the specified parameters");
             mail.setModel(model);
             mail.setTemplate("order_template.ftl");
             
@@ -267,7 +267,7 @@ public class OrderServiceImpl implements OrderService{
 			//Order saved to database
 			orderRepo.save(order);
 			
-			 SimpleDateFormat sdf = new SimpleDateFormat("EE MMM dd HH:mm:ss z yyyy", Locale.getDefault());
+			 SimpleDateFormat sdf = new SimpleDateFormat("EE MMM dd HH:mm:ss z yyyy", Locale.ROOT);
 			 Date parsedDate = sdf.parse(String.valueOf(order.getDateOrdered()));
 			 SimpleDateFormat print = new SimpleDateFormat("MMM d, yyyy HH:mm:ss");
 			 

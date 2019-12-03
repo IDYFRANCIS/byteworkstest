@@ -11,6 +11,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.security.SecureRandom;
+import java.security.cert.X509Certificate;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -32,11 +34,17 @@ import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.ClientConnectionManager;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 
 import com.fasterxml.jackson.databind.deser.std.DateDeserializers.DateDeserializer;
 import com.francis.byteworkstest.constant.ServerResponseStatus;
+import com.francis.byteworkstest.dto.ApiResponseDto;
 import com.francis.byteworkstest.dto.ErrorResponse;
 import com.francis.byteworkstest.dto.LoginResponse;
 import com.francis.byteworkstest.dto.ServerResponse;
@@ -301,6 +309,62 @@ public class Utility {
 	    }
 	    
 	    
+	    
+	    public static ApiResponseDto httpPostRequest(String urlPath, Object request, String authorization) {
+			try {
+			ApiResponseDto response = new ApiResponseDto();
+			
+			Gson gson = new Gson();
+            StringEntity postingString = new StringEntity(gson.toJson(request));
+            System.out.println(gson.toJson(request));
+            DefaultHttpClient client = getDefaultHttpClient();
+            HttpPost post = new HttpPost(urlPath);
+            post.setEntity(postingString);
+            post.addHeader("Content-type", "application/json");
+            post.addHeader("Authorization", authorization);
+            StringBuilder result = new StringBuilder();
+            HttpResponse responseData = client.execute(post);
+            
+            if (responseData.getStatusLine().getStatusCode() == HttpURLConnection.HTTP_OK) {
+                BufferedReader rd = new BufferedReader(new InputStreamReader(responseData.getEntity().getContent()));
+
+                String line;
+                while ((line = rd.readLine()) != null) {
+                    result.append(line);
+                }
+                System.out.println("result: " + result);
+
+                response.setStatus(responseData.getStatusLine().getStatusCode());
+                response.setResponse(result.toString());
+                return response;
+            } else {
+                BufferedReader rd = new BufferedReader(new InputStreamReader(responseData.getEntity().getContent()));
+
+                String line;
+                while ((line = rd.readLine()) != null) {
+                    result.append(line);
+                }
+                System.out.println("error result: " + result);
+    			
+                response.setStatus(responseData.getStatusLine().getStatusCode());
+                response.setResponse(result.toString());
+                return response;
+            }
+				
+			} catch (MalformedURLException e) {
+			
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		
+			return null;
+			
+	    }
+	    
 	    /**
 	     * Login request method, this method login as oAuth login token requires basic authorization set 
 	     * @param urlPath
@@ -514,5 +578,29 @@ public class Utility {
 				return null;
 				
 		    }
+	    
+	    
+	    public static DefaultHttpClient getDefaultHttpClient() throws Exception
+	    {
+	        DefaultHttpClient httpClient = new DefaultHttpClient();
+	        SSLContext ssl_ctx = SSLContext.getInstance("TLS");
+	        TrustManager[] certs = new TrustManager[] { new X509TrustManager() {
+	            public X509Certificate[] getAcceptedIssuers() {
+	                return null;
+	            }
+	     
+	            public void checkClientTrusted(X509Certificate[] certs, String t) {
+	            }
+	     
+	            public void checkServerTrusted(X509Certificate[] certs, String t) {
+	            }
+	        } };
+	        ssl_ctx.init(null, certs, new SecureRandom());
+	        SSLSocketFactory ssf = new SSLSocketFactory(ssl_ctx, SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+	        ClientConnectionManager ccm = httpClient.getConnectionManager();
+	        SchemeRegistry sr = ccm.getSchemeRegistry();
+	        sr.register(new Scheme("https", 443, ssf));
+	        return new DefaultHttpClient(ccm, httpClient.getParams());
+	    }
 	    
 }

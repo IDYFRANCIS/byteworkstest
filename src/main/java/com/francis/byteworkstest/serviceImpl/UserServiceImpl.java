@@ -410,14 +410,14 @@ public class UserServiceImpl implements UserService{
 
             Map<String, Object> model = new HashMap<String, Object>();
             model.put("salutation", "Dear " + User.getFirstName());
-            model.put("message", "We received a request to setup your share-portal account, if this is correct, please confirm by clicking on the link below to complete the process on the system. ");
+            model.put("message", "We received a request to re-send your activation code, if this is correct, please confirm by clicking on the link below to complete the process on the system. ");
             model.put("link", "https://api.byteworkstest.com/user/verification/code/" + activationCode);
             mail.setModel(model);
             mail.setTemplate("verify.ftl");
             emailService.sendSimpleMessage(mail);
 			
 			response.setData("");
-	        response.setMessage("Activation code sent successfully");
+	        response.setMessage("Activation code re-sent successfully");
 	        response.setSuccess(true);
 	        response.setStatus(ServerResponseStatus.OK);
 			
@@ -470,7 +470,7 @@ public class UserServiceImpl implements UserService{
 
             Map<String, Object> model = new HashMap<String, Object>();
             model.put("salutation", "Dear " + User.getFirstName());
-            model.put("message", "We received a request to reset your password <br>Use the verification link below to set up a new password for your account. If you did not request to reset your password, ingnore this email");        
+            model.put("message", "We received a request to resend your password <br>Use the verification link below to set up a new password for your account. If you did not request to reset your password, ingnore this email");        
             model.put("link", appConstants.APP_WEB_URL + "/reset-password/" + passwordResetCode);
             mail.setModel(model);
             mail.setTemplate("email_template.ftl");

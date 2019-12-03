@@ -55,6 +55,11 @@ public class Order implements Serializable{
     @ManyToOne
     @JoinColumn(name = "developer_id", nullable = false)
     private Developer developer;
+    
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "payment_id")
+    private Payment payment;
 	
 	@Column(name = "date_created", nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     @Temporal(TemporalType.TIMESTAMP)

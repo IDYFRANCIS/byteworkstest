@@ -64,6 +64,15 @@ public class AppConstants {
     
     @Value("${app.admin-phone}")
     public String APP_DEFAULT_ADMIN_PHONE;
+    
+    @Value("${paystack-resolve_bvn-url}")
+	public String PAYSTACK_BVN_URL;
+    
+//    @Value("${paystack-card_charge-url}")
+//	public String PAYSTACK_CARD_CHARGE;
+	
+	@Value("${paystack-authorization-key}")
+	public String PAYSTACK_AUTH_KEY;
 
     private AppConstants() {
     }

@@ -234,68 +234,68 @@ public class UserController {
 	
 	
 	
-	@Autowired
-	TokenStore tokenStore;
-	
-	@Autowired
-	JwtTokenStore jwtTokenStore;
-	 
-	@RequestMapping(method = RequestMethod.POST, value = "/tokens")
-	@ResponseBody
-	public List<String> getTokens() {
-	    List<String> tokenValues = new ArrayList<String>();
-	    Collection<OAuth2AccessToken> tokens = jwtTokenStore.findTokensByClientId("user"); 
-	    if (tokens!=null){
-	        for (OAuth2AccessToken token:tokens){
-	            tokenValues.add(token.getValue());
-	        }
-	    }
-	    return tokenValues;
-	}
-	
-	
-	@RequestMapping(method = RequestMethod.POST, value = "/logout/{tokenId:.*}")
-	@ResponseBody
-	public String revokeToken(@PathVariable String tokenId) {
-		System.out.println(tokenId);
-		OAuth2Authentication authentication = jwtTokenStore.readAuthentication(tokenId);
-		
-		  if (authentication == null) {
-				System.out.println("is null");
-		    throw new InvalidTokenException("Invalid access token: " + tokenId);
-		  }
-		  OAuth2Request clientAuth = authentication.getOAuth2Request();
-		  if (clientAuth == null) {
-				System.out.println("Invalid access token");
-		    throw new InvalidTokenException("Invalid access token (no client id): " + tokenId);
-		  }
-		  Collection<OAuth2AccessToken> accessTokens = jwtTokenStore.findTokensByClientIdAndUserName("user", "admin@bizzdeskgroup.com");
-		  
-		  if (accessTokens == null) {
-				System.out.println("Invalid accessToken");
-		    throw new InvalidTokenException("accessToken (no client id): " + tokenId);
-		  }
-		  
-		  for(OAuth2AccessToken accessToken : accessTokens){
-			  System.out.println("Invalid accessToken" + accessToken.getTokenType());
-			  jwtTokenStore.removeAccessToken(accessToken);
-		  }
-		  
-		  
-			System.out.println("not null " + clientAuth.getClientId());
-		  return clientAuth.getClientId();  
-	}
-	
-	 @Autowired
-	    private DefaultTokenServices tokenServicess;
-	  @ResponseStatus(HttpStatus.OK)
-	    @RequestMapping(method = RequestMethod.DELETE, value = "/revoke")
-	    public void revokeToken2(@RequestHeader("Authorization")  String authorization) {
-		  String tokenId = authorization.replace("Bearer", "").trim();
-		  OAuth2AccessToken accessToken = tokenStore.readAccessToken(tokenId);
-		  tokenStore.removeAccessToken(accessToken);
-	        boolean r = tokenServices.revokeToken(tokenId);
-	        System.out.println(r);
-	       
-	    }
+//	@Autowired
+//	TokenStore tokenStore;
+//	
+//	@Autowired
+//	JwtTokenStore jwtTokenStore;
+//	 
+//	@RequestMapping(method = RequestMethod.POST, value = "/tokens")
+//	@ResponseBody
+//	public List<String> getTokens() {
+//	    List<String> tokenValues = new ArrayList<String>();
+//	    Collection<OAuth2AccessToken> tokens = jwtTokenStore.findTokensByClientId("user"); 
+//	    if (tokens!=null){
+//	        for (OAuth2AccessToken token:tokens){
+//	            tokenValues.add(token.getValue());
+//	        }
+//	    }
+//	    return tokenValues;
+//	}
+//	
+//	
+//	@RequestMapping(method = RequestMethod.POST, value = "/logout/{tokenId:.*}")
+//	@ResponseBody
+//	public String revokeToken(@PathVariable String tokenId) {
+//		System.out.println(tokenId);
+//		OAuth2Authentication authentication = jwtTokenStore.readAuthentication(tokenId);
+//		
+//		  if (authentication == null) {
+//				System.out.println("is null");
+//		    throw new InvalidTokenException("Invalid access token: " + tokenId);
+//		  }
+//		  OAuth2Request clientAuth = authentication.getOAuth2Request();
+//		  if (clientAuth == null) {
+//				System.out.println("Invalid access token");
+//		    throw new InvalidTokenException("Invalid access token (no client id): " + tokenId);
+//		  }
+//		  Collection<OAuth2AccessToken> accessTokens = jwtTokenStore.findTokensByClientIdAndUserName("user", "admin@bizzdeskgroup.com");
+//		  
+//		  if (accessTokens == null) {
+//				System.out.println("Invalid accessToken");
+//		    throw new InvalidTokenException("accessToken (no client id): " + tokenId);
+//		  }
+//		  
+//		  for(OAuth2AccessToken accessToken : accessTokens){
+//			  System.out.println("Invalid accessToken" + accessToken.getTokenType());
+//			  jwtTokenStore.removeAccessToken(accessToken);
+//		  }
+//		  
+//		  
+//			System.out.println("not null " + clientAuth.getClientId());
+//		  return clientAuth.getClientId();  
+//	}
+//	
+//	 @Autowired
+//	    private DefaultTokenServices tokenServicess;
+//	  @ResponseStatus(HttpStatus.OK)
+//	    @RequestMapping(method = RequestMethod.DELETE, value = "/revoke")
+//	    public void revokeToken2(@RequestHeader("Authorization")  String authorization) {
+//		  String tokenId = authorization.replace("Bearer", "").trim();
+//		  OAuth2AccessToken accessToken = tokenStore.readAccessToken(tokenId);
+//		  tokenStore.removeAccessToken(accessToken);
+//	        boolean r = tokenServices.revokeToken(tokenId);
+//	        System.out.println(r);
+//	       
+//	    }
 }
