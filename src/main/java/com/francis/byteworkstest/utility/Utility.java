@@ -325,7 +325,7 @@ public class Utility {
             StringBuilder result = new StringBuilder();
             HttpResponse responseData = client.execute(post);
             
-            if (responseData.getStatusLine().getStatusCode() == HttpURLConnection.HTTP_OK) {
+            if (responseData.getStatusLine().getStatusCode() == 200) {
                 BufferedReader rd = new BufferedReader(new InputStreamReader(responseData.getEntity().getContent()));
 
                 String line;

@@ -161,7 +161,7 @@ public class PaymentServiceImpl implements PaymentService{
 			//Pay using paystack gateway
             api = Utility.httpPostRequest(appConstants.PAYSTACK_BVN_URL + "/charge", request, appConstants.PAYSTACK_AUTH_KEY);
             
-            if (api.getStatus() == HttpURLConnection.HTTP_OK) {
+            if (api.getStatus() == 200) {
 
                 CardChargeResponseDto cardDataResponseDto = gson.fromJson(api.getResponse(), CardChargeResponseDto.class);
                 
@@ -179,11 +179,10 @@ public class PaymentServiceImpl implements PaymentService{
                     payment.setCreatedAt(cardDataResponseDto.getData().getCreated_at());
                     payment.setCurrency(cardDataResponseDto.getData().getCurrency());
                     payment.setCustomer(cardDataResponseDto.getData().getCustomer().getEmail());
-               //     payment.setDeveloper(cardDataResponseDto.getData().);
+                  //  payment.setDeveloper(cardDataResponseDto.getData().);
                     payment.setPaidAt(cardDataResponseDto.getData().getPaid_at());
-                    payment.setTransactionDate(cardDataResponseDto.getData().getTransaction_date());
-                    
-                 //   payment.setOrder(order.getDeveloper().getOrders());
+                    payment.setTransactionDate(cardDataResponseDto.getData().getTransaction_date());         
+                //  payment.setOrder(order.getDeveloper().getOrders());
                     payment.setUser(user);
                     payment.setTransactionNumber(transactionNumber);
                     
