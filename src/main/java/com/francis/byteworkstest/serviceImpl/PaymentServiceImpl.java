@@ -224,6 +224,7 @@ public class PaymentServiceImpl implements PaymentService{
 
 	}
 
+	//get paments by transaction number
 	@Override
 	public ServerResponse getPaymentByTransactionnumber(String transactionNumber) {
 		
