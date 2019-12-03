@@ -265,6 +265,8 @@ public class PaymentServiceImpl implements PaymentService{
 		return response;
 	}
 
+	
+	//get payments by payments status
 	@Override
 	public ServerResponse getPaymentsByStatus(PaymentStatus paymentStatus) {
 		
