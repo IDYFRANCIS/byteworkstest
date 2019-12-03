@@ -161,7 +161,7 @@ public class PaymentServiceImpl implements PaymentService{
 			//Pay using paystack gateway
             api = Utility.httpPostRequest(appConstants.PAYSTACK_BVN_URL + "/charge", request, appConstants.PAYSTACK_AUTH_KEY);
             
-            if (api.getStatus() == 200) {
+            if (api.getStatus() == HttpURLConnection.HTTP_OK) {
 
                 CardChargeResponseDto cardDataResponseDto = gson.fromJson(api.getResponse(), CardChargeResponseDto.class);
                 
