@@ -28,7 +28,7 @@ public class OrderServiceTest {
 	
 	@Test
 	public void create(){
-		String developerCode = "DEV1574779036660";
+		String developerCode = "DEV1580358070165";
 		long quantity = 1;
 		PaymentType paymentType = null;
 		FoodType foodType = null;
@@ -50,7 +50,7 @@ public class OrderServiceTest {
 	
 	@Test
 	public void getOrderByOrderNumber(){
-		ServerResponse response = orderService.getOrderByOrderNumber("ORDER1575037485899");
+		ServerResponse response = orderService.getOrderByOrderNumber("ORDER1580358105244");
 		System.out.println(response.getMessage());
 		assertEquals(response.isSuccess(), true);
 	}
@@ -67,7 +67,7 @@ public class OrderServiceTest {
 	@Test
 	public void getOrderByFoodType(){
 		FoodType food = null;
-		ServerResponse response = orderService.getOrderByFoodType(FoodType.FRIED_RICE);
+		ServerResponse response = orderService.getOrderByFoodType(FoodType.JELLOF_RICE);
 		System.out.println(response.getMessage());
 		assertEquals(response.isSuccess(), true);
 	}
@@ -76,7 +76,7 @@ public class OrderServiceTest {
 	@Test
 	public void getOrderByPaymentType(){
 		PaymentType payment = null;
-		ServerResponse response = orderService.getOrderByPaymentType(PaymentType.CARD);
+		ServerResponse response = orderService.getOrderByPaymentType(PaymentType.ON_DELIVERY);
 		System.out.println(response.getMessage());
 		assertEquals(response.isSuccess(), true);
 	}

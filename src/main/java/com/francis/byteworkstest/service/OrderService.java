@@ -39,5 +39,7 @@ public interface OrderService {
 	
 	//Methods to get all food ordered
 	public ServerResponse getAllOrders();
+	
+	public ServerResponse getOrderByFood(String foodName);
 
 }

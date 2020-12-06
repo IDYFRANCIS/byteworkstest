@@ -12,7 +12,4 @@ public class ResendUserActivationCodeDto {
 		this.email = email;
 	}
 
-
-	
-
 }

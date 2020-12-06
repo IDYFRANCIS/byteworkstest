@@ -32,5 +32,7 @@ public interface OrderRepository extends CrudRepository<Order, Long>{
 	
 	// find order accounts by paymentType  	
 	Collection<Order> findByPaymentType(PaymentType paymentType);
+	
+	public Order findByFood(String foodName);
 
 }

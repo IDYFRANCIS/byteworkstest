@@ -33,6 +33,7 @@ import javax.net.ssl.X509TrustManager;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.scheme.Scheme;
@@ -119,7 +120,6 @@ public class Utility {
 		}
 
 
-
 		String f = Long.toString(l1).toString() + Long.toString(l2).toString() + Long.toString(l3).toString()
 
 				+ Long.toString(l4).toString();
@@ -180,7 +180,7 @@ public class Utility {
 	    public static boolean isValidPhone(String phone){
 	        return phone.startsWith("+234") && phone.length() > 13 || phone.startsWith("070") && phone.length() > 9
 	        		|| phone.startsWith("080") && phone.length() > 9 || phone.startsWith("090") && phone.length() > 9
-	        		|| phone.startsWith("0") && phone.length() > 9;
+	        		|| phone.startsWith("0") && phone.length() > 9 || phone.startsWith("081") && phone.length() > 9;
 	    }
 
 	    @SuppressWarnings("unchecked")
@@ -365,6 +365,61 @@ public class Utility {
 			
 	    }
 	    
+	    
+	    
+	    
+	    public static ApiResponseDto httpGetRequest(String urlPath,  String authorization) {
+			try {
+				
+			ApiResponseDto response = new ApiResponseDto();
+			
+            HttpClient client = HttpClientBuilder.create().build();
+            HttpGet get = new HttpGet(urlPath);
+            get.addHeader("Content-type", "application/json");
+            get.addHeader("Authorization", authorization);
+            StringBuilder result = new StringBuilder();
+            HttpResponse responseData = client.execute(get);
+                        
+            if (responseData.getStatusLine().getStatusCode() == HttpURLConnection.HTTP_OK) {
+                BufferedReader rd = new BufferedReader(new InputStreamReader(responseData.getEntity().getContent()));
+
+                String line;
+                while ((line = rd.readLine()) != null) {
+                    result.append(line);
+                }
+                System.out.println("result: " + result);
+
+                response.setStatus(responseData.getStatusLine().getStatusCode());
+                response.setResponse(result.toString());
+                return response;
+            } else {
+                BufferedReader rd = new BufferedReader(new InputStreamReader(responseData.getEntity().getContent()));
+
+                String line;
+                while ((line = rd.readLine()) != null) {
+                    result.append(line);
+                }
+                System.out.println("error result: " + result);
+    			
+                response.setStatus(responseData.getStatusLine().getStatusCode());
+                response.setResponse(result.toString());
+                return response;
+            }
+				
+			} catch (MalformedURLException e) {
+			
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			
+			}
+		
+			return null;
+			
+	    }
+	    
+	    
+	    
 	    /**
 	     * Login request method, this method login as oAuth login token requires basic authorization set 
 	     * @param urlPath
@@ -430,7 +485,7 @@ public class Utility {
 							System.out.println(output);
 							conn.disconnect();
 							response.setData("Failed to sign in");
-							response.setMessage("check your phone and password then try again or contact support");
+							response.setMessage("check your uername and password then try again or contact support");
 					        response.setSuccess(false);
 							response.setStatus(ServerResponseStatus.FAILED);
 							return response;
@@ -447,7 +502,7 @@ public class Utility {
 						
 						System.out.println(output);
 						conn.disconnect();
-						response.setData("You are not authorize ");
+						response.setData("You are not authorize to access this resource");
 						response.setStatus(ServerResponseStatus.FAILED);
 						return response;
 				 

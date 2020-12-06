@@ -46,7 +46,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(emailOrphone, account.getPassword(), getAuthorities(account));
     }
 
-    private Collection<? extends GrantedAuthority> getAuthorities(User role) {
+    private Collection<? extends GrantedAuthority> getAuthorities(User role){
         return getGrantedAuthorities(getPrivileges(role));
     }
 

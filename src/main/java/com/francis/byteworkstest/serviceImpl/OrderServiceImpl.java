@@ -1,13 +1,12 @@
 package com.francis.byteworkstest.serviceImpl;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.TimeZone;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -26,7 +25,10 @@ import com.francis.byteworkstest.enumType.FoodType;
 import com.francis.byteworkstest.enumType.PaymentType;
 import com.francis.byteworkstest.mail.EmailService;
 import com.francis.byteworkstest.mail.Mail;
+//import com.francis.byteworkstest.mail.EmailService;
+//import com.francis.byteworkstest.mail.Mail;
 import com.francis.byteworkstest.model.Developer;
+import com.francis.byteworkstest.model.Food;
 import com.francis.byteworkstest.model.Order;
 import com.francis.byteworkstest.repository.DeveloperRepository;
 import com.francis.byteworkstest.repository.OrderRepository;
@@ -103,6 +105,20 @@ public class OrderServiceImpl implements OrderService{
 		
 		return null;
 	}
+	  
+	  
+//	  @Override
+//	  public Order findByFood(String foodName) {
+//		  
+//		  try {
+//			  
+//			  return orderRepo.findByFood(foodName);
+//			  
+//		  }catch(Exception e) {
+//			  e.printStackTrace();
+//		  }
+//	  }
+	  
 
 
 	
@@ -118,6 +134,7 @@ public class OrderServiceImpl implements OrderService{
 		
 		String code = request.getDeveloperCode() != null ? request.getDeveloperCode() : request.getDeveloperCode();
 		long quantity = request.getQuantity() != 0 ? request.getQuantity() : request.getQuantity();
+		//Food foodName = request.getFoodName() != null ? request.getFoodName() : request.getFoodName()
 
        //Validating to ensure code is inputed
 		if (code == null || code.isEmpty()) {
@@ -138,6 +155,16 @@ public class OrderServiceImpl implements OrderService{
 
             return response;
 		}
+		
+		
+//		if (foodName == null) {
+//			response.setData("");
+//            response.setMessage("Please enter name of food to be ordred");
+//            response.setSuccess(false);
+//            response.setStatus(ServerResponseStatus.FAILED);
+//
+//            return response;
+//		}
 		
 		//Validating payment type is selected
 		if (paymentType == null || paymentType.toString().isEmpty()) {
@@ -192,6 +219,7 @@ public class OrderServiceImpl implements OrderService{
 			order.setOrderNumber(orderCode);
 			order.setDeveloper(confirmDeveloper);
 			order.setFoodType(foodType);
+			order.setFood((List<Food>) request.getFoodName());
 			order.setDeliveryType(deliverType);
 			order.setPaymentType(paymentType);
 			order.setQuantity(request.getQuantity());
@@ -199,39 +227,39 @@ public class OrderServiceImpl implements OrderService{
 			
 			//Logic to calculate cost of food ordered
 			if (foodType.equals(FoodType.FRIED_RICE)) {
-				order.setAmount(100 * request.getQuantity());
+				order.setAmount(100.000 * request.getQuantity());
 			}
 			
 			if (foodType.equals(FoodType.GARRI_AND_EGGUSUSOUP)) {
-				order.setAmount(700 * request.getQuantity());
+				order.setAmount(700.000 * request.getQuantity());
 			}
 			
 			if (foodType.equals(FoodType.GARRI_AND_OKROSOUP)) {
-				order.setAmount(700 * request.getQuantity());
+				order.setAmount(750.000 * request.getQuantity());
 			}
 			
 			if (foodType.equals(FoodType.GARRI_AND_VEGETABLESOUP)) {
-				order.setAmount(800 * request.getQuantity());
+				order.setAmount(800.000 * request.getQuantity());
 			}
 			
 			if (foodType.equals(FoodType.JELLOF_RICE)) {
-				order.setAmount(450 * request.getQuantity());
+				order.setAmount(450.000 * request.getQuantity());
 			}
 			
 			if (foodType.equals(FoodType.RICE_AND_BEANS)) {
-				order.setAmount(500 * request.getQuantity());
+				order.setAmount(500.000 * request.getQuantity());
 			}
 			
 			if (foodType.equals(FoodType.RICE_AND_PEPPERSOUP)) {
-				order.setAmount(600 * request.getQuantity());
+				order.setAmount(600.000 * request.getQuantity());
 			}
 			
 			if (foodType.equals(FoodType.RICE_AND_STEW)) {
-				order.setAmount(550 * request.getQuantity());
+				order.setAmount(550.000 * request.getQuantity());
 			}
 			
 			if (foodType.equals(FoodType.PEPPER_RICE)) {
-				order.setAmount(650 * request.getQuantity());
+				order.setAmount(650.000 * request.getQuantity());
 			}
 			
 			//send mail notification to food vendor on order placed
@@ -342,6 +370,7 @@ public class OrderServiceImpl implements OrderService{
 			OrderResponseDto1 dto1 = new OrderResponseDto1();
 			dto1.setOrderNumber(orders.getOrderNumber());
 			dto1.setFoodType(orders.getFoodType());
+			dto1.setFoodName(orders.getFood().listIterator().toString());
 			dto1.setPaymentType(orders.getPaymentType());
 			dto1.setDeliveryType(orders.getDeliveryType());
 			dto1.setQuantity(orders.getQuantity());
@@ -549,5 +578,68 @@ public class OrderServiceImpl implements OrderService{
 			}
 			return response;	   
 	  }
+
+	@Override
+	public ServerResponse getOrderByFood(String foodName) {
+		
+		
+           ServerResponse response =  new ServerResponse();
+		
+		//Validating to ensure that order code is inputed
+		if(foodName == null || foodName.isEmpty()) {
+			response.setData("");
+            response.setMessage("Please provide food name");
+            response.setSuccess(false);
+            response.setStatus(ServerResponseStatus.FAILED);
+            return response;
+		}
+		
+		try {
+			//Confirming that order number inputed exist on the system
+			Order orders = orderRepo.findByFood(foodName);
+			
+			if (orders == null) {
+				response.setData("");
+	            response.setMessage("Order with food name " + foodName + " does not exist");
+	            response.setSuccess(false);
+	            response.setStatus(ServerResponseStatus.OK);
+	            return response;
+			}
+				
+			//If order exist, then order is fetched and displayed for user to see
+			OrderResponseDto1 dto1 = new OrderResponseDto1();
+			dto1.setOrderNumber(orders.getOrderNumber());
+			dto1.setFoodType(orders.getFoodType());
+			dto1.setFoodName(orders.getFood().listIterator().toString());
+			dto1.setPaymentType(orders.getPaymentType());
+			dto1.setDeliveryType(orders.getDeliveryType());
+			dto1.setQuantity(orders.getQuantity());
+			dto1.setUserFirstName(orders.getDeveloper().getUser().getFirstName());
+			dto1.setUserMiddleName(orders.getDeveloper().getUser().getMiddleName());
+			dto1.setUserLastName(orders.getDeveloper().getUser().getLastName());
+			dto1.setGender(orders.getDeveloper().getUser().getGender());
+			dto1.setEmail(orders.getDeveloper().getUser().getEmail());
+			dto1.setPhone(orders.getDeveloper().getUser().getPhone());
+			dto1.setAddress(orders.getDeveloper().getUser().getAddress());
+			dto1.setDateOrdered(orders.getDateOrdered());
+			dto1.setAmount(orders.getAmount());
+			
+			response.setData(dto1);
+            response.setMessage("Oder fetched successfully");
+            response.setSuccess(true);
+            response.setStatus(ServerResponseStatus.OK);
+			
+			
+		}catch(Exception e) {
+			response.setData("");
+            response.setMessage("Something went wrong");
+            response.setSuccess(false);
+            response.setStatus(ServerResponseStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+            return response;
+		}
+		
+		return response;
+	}
 	   	   	
  }

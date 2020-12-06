@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 public class ServerResponseStatus {
 
 	
-	 public final static int OK = HttpStatus.OK.value();
+	    public final static int OK = HttpStatus.OK.value();
 
 	    public final static int CREATED = HttpStatus.CREATED.value();
 

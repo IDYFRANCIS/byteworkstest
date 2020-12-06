@@ -13,7 +13,8 @@ public class OrderResponseDto1 {
     DeliveryMethod deliveryType;
     FoodType foodType;
     private long quantity;
-    private double amount;    
+    private double amount; 
+    private String foodName;
     private String userFirstName;
     private String userMiddleName;
     private String userLastName;
@@ -107,6 +108,12 @@ public class OrderResponseDto1 {
 	}
 	public void setDateOrdered(Date dateOrdered) {
 		this.dateOrdered = dateOrdered;
+	}
+	public String getFoodName() {
+		return foodName;
+	}
+	public void setFoodName(String foodName) {
+		this.foodName = foodName;
 	}
     
     

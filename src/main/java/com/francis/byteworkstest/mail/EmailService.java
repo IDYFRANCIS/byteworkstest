@@ -19,6 +19,7 @@ import freemarker.template.TemplateException;
 /*
  * Mail Service
  */
+
 @Service
 public class EmailService {
 

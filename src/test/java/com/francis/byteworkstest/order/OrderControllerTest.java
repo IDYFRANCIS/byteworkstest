@@ -35,7 +35,7 @@ public class OrderControllerTest {
 	Gson gson;
 	
 	//Note: make sure you acquired authorization token from login for proper testing
-	String authorization = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsidXNlci13ZWItc2VydmljZSJdLCJ1c2VyX25hbWUiOiJyZWdpbmFmcmFuY2lzODNAZ21haWwuY29tIiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl0sImV4cCI6MTU3NTMyMjcxMCwiYXV0aG9yaXRpZXMiOlsiaXNVc2VyIl0sImp0aSI6ImZjODZiNzU4LTg3MTktNGUwOS04ZGExLWY3ZjNlZDUxYjRhYiIsImNsaWVudF9pZCI6InVzZXIifQ.ML6mY6oXqlQ0GDfIKFkR2OmPAYmCGXc7dgOSEFzzr50";
+	String authorization = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsidXNlci13ZWItc2VydmljZSJdLCJ1c2VyX25hbWUiOiJyZWdpbmFmcmFuY2lzODNAZ21haWwuY29tIiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl0sImV4cCI6MTU4MDQwMTE4OCwiYXV0aG9yaXRpZXMiOlsiaXNVc2VyIl0sImp0aSI6IjZjZmFmZGI5LWRjOTgtNGJlNC1hNTY5LTFiNGYyMzg3ZGM3NCIsImNsaWVudF9pZCI6InVzZXIifQ.nzqwZS61usvt5yjp1PkrGUil8xR1MLNuwgmtQ4mtcTA";
 	
 	@Before
 	  public void setup() {
@@ -46,16 +46,17 @@ public class OrderControllerTest {
 	@Test
 	public void create() throws Exception{
 		
-		String developerCode = "DEV1574779036660";
+		String developerCode = "DEV1580358070165";
 		long quantity = 1;
 
 		OrderDto request = new OrderDto();
 		request.setDeveloperCode(developerCode);
 		request.setQuantity(quantity);
+		
 		String json = gson.toJson(request);
 		
 		ResultActions mvcResult = mockMvc.perform(
-				MockMvcRequestBuilders.post("/order/{paymentType}/{foodType}/{deliveryType}"+ request)
+				MockMvcRequestBuilders.post( request + "/order/ON_DELIVERY/JELLOF_RICE/Office_Delivery")
 				.contentType(MediaType.APPLICATION_JSON)
 				.header("Authorization", authorization)
 				.content(json)
@@ -84,7 +85,7 @@ public class OrderControllerTest {
 	public void getOrderByFoodType()throws Exception {
 		FoodType food = null;
 		ResultActions mvcResult = mockMvc.perform(
-				MockMvcRequestBuilders.get("/order/foodType/{foodType}"+ FoodType.FRIED_RICE)
+				MockMvcRequestBuilders.get("/order/foodType/"+ FoodType.JELLOF_RICE)
 				.contentType(MediaType.APPLICATION_JSON)
 				.header("Authorization", authorization)
 					.accept(MediaType.APPLICATION_JSON)
@@ -100,7 +101,7 @@ public class OrderControllerTest {
 	public void getOrderByPaymentType()throws Exception {
 		PaymentType payment = null;
 		ResultActions mvcResult = mockMvc.perform(
-				MockMvcRequestBuilders.get("/order/paymentType/{paymentType}"+ PaymentType.CARD)
+				MockMvcRequestBuilders.get("/order/paymentType/"+ PaymentType.ON_DELIVERY)
 				.contentType(MediaType.APPLICATION_JSON)
 				.header("Authorization", authorization)
 					.accept(MediaType.APPLICATION_JSON)
@@ -116,7 +117,7 @@ public class OrderControllerTest {
 	public void getOrderByDeliveryMethod()throws Exception {
 		DeliveryMethod delivery = null;
 		ResultActions mvcResult = mockMvc.perform(
-				MockMvcRequestBuilders.get("/order/deliveryType/{deliveryType}"+ DeliveryMethod.Office_Delivery)
+				MockMvcRequestBuilders.get("/order/deliveryType/"+ DeliveryMethod.Office_Delivery)
 				.contentType(MediaType.APPLICATION_JSON)
 				.header("Authorization", authorization)
 					.accept(MediaType.APPLICATION_JSON)
@@ -130,9 +131,9 @@ public class OrderControllerTest {
 	
 	@Test
 	public void getOrderByOrderNumber()throws Exception {
-		String orderNumber = "ORDER1575037485899";
+		String orderNumber = "ORDER1580358105244";
 		ResultActions mvcResult = mockMvc.perform(
-				MockMvcRequestBuilders.get("/order/{orderNumber}"+ orderNumber)
+				MockMvcRequestBuilders.get("/order/"+ orderNumber)
 				.contentType(MediaType.APPLICATION_JSON)
 				.header("Authorization", authorization)
 					.accept(MediaType.APPLICATION_JSON)

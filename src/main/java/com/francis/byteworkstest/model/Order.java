@@ -1,18 +1,27 @@
 package com.francis.byteworkstest.model;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.francis.byteworkstest.enumType.DeliveryMethod;
@@ -51,6 +60,15 @@ public class Order implements Serializable{
 	@Column(name = "food_type", nullable = false)
 	private FoodType foodType;
 	
+	
+//	@LazyCollection(LazyCollectionOption.FALSE)
+//	@OneToMany(mappedBy = "order")
+//	private List<Food> food;
+	
+	
+	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private List<Food> food;
+	
 	//@JsonIgnore
     @ManyToOne
     @JoinColumn(name = "developer_id", nullable = false)
@@ -64,9 +82,7 @@ public class Order implements Serializable{
 	@Column(name = "date_created", nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateOrdered;
-	
-	
-	
+
 	public long getId() {
 		return id;
 	}
@@ -123,12 +139,28 @@ public class Order implements Serializable{
 		this.foodType = foodType;
 	}
 
+	public List<Food> getFood() {
+		return food;
+	}
+
+	public void setFood(List<Food> food) {
+		this.food = food;
+	}
+
 	public Developer getDeveloper() {
 		return developer;
 	}
 
 	public void setDeveloper(Developer developer) {
 		this.developer = developer;
+	}
+
+	public Payment getPayment() {
+		return payment;
+	}
+
+	public void setPayment(Payment payment) {
+		this.payment = payment;
 	}
 
 	public Date getDateOrdered() {
@@ -138,5 +170,7 @@ public class Order implements Serializable{
 	public void setDateOrdered(Date dateOrdered) {
 		this.dateOrdered = dateOrdered;
 	}
+	
+	
 
 }

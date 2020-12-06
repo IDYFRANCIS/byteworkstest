@@ -69,6 +69,4 @@ public class Privilege implements Serializable{
 		this.users = users;
 	}
 
-	
-
 }

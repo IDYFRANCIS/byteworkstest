@@ -32,9 +32,9 @@ public class FoodCategory implements Serializable{
 	private String categoryName;
 	
 	
-	    //@JsonIgnore
-		@OneToMany(mappedBy = "foodCategory", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-		private List<Food> food;
+//	    //@JsonIgnore
+//		@OneToMany(mappedBy = "foodCategory", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//		private List<Food> food;
 
 
 		public long getId() {
@@ -53,13 +53,12 @@ public class FoodCategory implements Serializable{
 			this.categoryName = categoryName;
 		}
 
-		public List<Food> getFood() {
-			return food;
-		}
-
-		public void setFood(List<Food> food) {
-			this.food = food;
-		}
-		
+//		public List<Food> getFood() {
+//			return food;
+//		}
+//
+//		public void setFood(List<Food> food) {
+//			this.food = food;
+//		}
 		
 }

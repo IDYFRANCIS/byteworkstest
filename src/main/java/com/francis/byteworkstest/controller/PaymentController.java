@@ -33,122 +33,128 @@ import io.swagger.annotations.ApiOperation;
 @Api(tags = "Payment Management", description = "Endpoint")
 public class PaymentController {
 
-	@Autowired 
+	@Autowired
 	PaymentService service;
-	
-	private HttpHeaders responseHeaders = new HttpHeaders();	
+
+	private HttpHeaders responseHeaders = new HttpHeaders();
 
 	@ApiOperation(value = "Make payment for order", response = ServerResponse.class)
-	@RequestMapping(value ="/{userCode}", method = RequestMethod.POST)
-//	@PreAuthorize("hasAuthority('isAdmin') OR hasAuthority('isShareholder')")
+	@RequestMapping(value = "/{userCode}", method = RequestMethod.POST)
+	// @PreAuthorize("hasAuthority('isAdmin') OR hasAuthority('isShareholder')")
 	@ResponseBody
-	public ResponseEntity<?> create(@RequestHeader("Authorization")  String authorization, @PathVariable("userCode") String userCode, @RequestBody PayForOrderRequestDto request){
-				
+	public ResponseEntity<?> create(@RequestHeader("Authorization") String authorization,
+			@PathVariable("userCode") String userCode, @RequestBody PayForOrderRequestDto request) {
+
 		ServerResponse response = new ServerResponse();
-		
+
 		try {
 			response = service.create(userCode, request);
-		 
+
 		} catch (Exception e) {
 			response.setData("An error occured" + e.getMessage());
-            response.setMessage("An error occured");
-            response.setSuccess(false);
-            response.setStatus(ServerResponseStatus.FAILED);
-            e.printStackTrace();
+			response.setMessage("An error occured");
+			response.setSuccess(false);
+			response.setStatus(ServerResponseStatus.FAILED);
+			e.printStackTrace();
 		}
-		
-		return new ResponseEntity<ServerResponse>(response, responseHeaders, ServerResponse.getStatus(response.getStatus()));
+
+		return new ResponseEntity<ServerResponse>(response, responseHeaders,
+				ServerResponse.getStatus(response.getStatus()));
 	}
-	
 
 	@ApiOperation(value = "View payment by transaction number", response = ServerResponse.class)
-	@RequestMapping(value ="/{transactionNumber}", method = RequestMethod.GET)
-//	@PreAuthorize("hasAuthority('isAdmin') OR hasAuthority('isShareholder')")
+	@RequestMapping(value = "/{transactionNumber}", method = RequestMethod.GET)
+	// @PreAuthorize("hasAuthority('isAdmin') OR hasAuthority('isShareholder')")
 	@ResponseBody
-	public ResponseEntity<?> getPaymentByTransactionnumber(@RequestHeader("Authorization")  String authorization, @PathVariable("transactionNumber") String transactionNumber){
-				
+	public ResponseEntity<?> getPaymentByTransactionnumber(@RequestHeader("Authorization") String authorization,
+			@PathVariable("transactionNumber") String transactionNumber) {
+
 		ServerResponse response = new ServerResponse();
-		
+
 		try {
 			response = service.getPaymentByTransactionnumber(transactionNumber);
-		 
+
 		} catch (Exception e) {
 			response.setData("An error occured" + e.getMessage());
-            response.setMessage("An error occured");
-            response.setSuccess(false);
-            response.setStatus(ServerResponseStatus.FAILED);
-            e.printStackTrace();
+			response.setMessage("An error occured");
+			response.setSuccess(false);
+			response.setStatus(ServerResponseStatus.FAILED);
+			e.printStackTrace();
 		}
-		
-		return new ResponseEntity<ServerResponse>(response, responseHeaders, ServerResponse.getStatus(response.getStatus()));
+
+		return new ResponseEntity<ServerResponse>(response, responseHeaders,
+				ServerResponse.getStatus(response.getStatus()));
 	}
-	
+
 	@ApiOperation(value = "View all payments by order number", response = ServerResponse.class)
-	@RequestMapping(value ="/order/{orderNumber}", method = RequestMethod.GET)
-//	@PreAuthorize("hasAuthority('isAdmin') OR hasAuthority('isShareholder')")
+	@RequestMapping(value = "/order/{orderNumber}", method = RequestMethod.GET)
+	// @PreAuthorize("hasAuthority('isAdmin') OR hasAuthority('isShareholder')")
 	@ResponseBody
-	public ResponseEntity<?> getPaymentByOrderNumber(@RequestHeader("Authorization")  String authorization, @PathVariable("orderNumber") String orderNumber){
-				
+	public ResponseEntity<?> getPaymentByOrderNumber(@RequestHeader("Authorization") String authorization,
+			@PathVariable("orderNumber") String orderNumber) {
+
 		ServerResponse response = new ServerResponse();
-		
+
 		try {
 			response = service.getPaymentByOrder(orderNumber);
-		 
+
 		} catch (Exception e) {
 			response.setData("An error occured" + e.getMessage());
-            response.setMessage("An error occured");
-            response.setSuccess(false);
-            response.setStatus(ServerResponseStatus.FAILED);
-            e.printStackTrace();
+			response.setMessage("An error occured");
+			response.setSuccess(false);
+			response.setStatus(ServerResponseStatus.FAILED);
+			e.printStackTrace();
 		}
-		
-		return new ResponseEntity<ServerResponse>(response, responseHeaders, ServerResponse.getStatus(response.getStatus()));
+
+		return new ResponseEntity<ServerResponse>(response, responseHeaders,
+				ServerResponse.getStatus(response.getStatus()));
 	}
-	
+
 	@ApiOperation(value = "View all payments by paymentStatus", response = ServerResponse.class)
-	@RequestMapping(value ="/status/{paymentStatus}", method = RequestMethod.GET)
-//	@PreAuthorize("hasAuthority('isAdmin') OR hasAuthority('isShareholder')")
+	@RequestMapping(value = "/status/{paymentStatus}", method = RequestMethod.GET)
+	// @PreAuthorize("hasAuthority('isAdmin') OR hasAuthority('isShareholder')")
 	@ResponseBody
-	public ResponseEntity<?> getPaymentsByStatus(@RequestHeader("Authorization")  String authorization, @PathVariable("paymentStatus") PaymentStatus paymentStatus){
-				
+	public ResponseEntity<?> getPaymentsByStatus(@RequestHeader("Authorization") String authorization,
+			@PathVariable("paymentStatus") PaymentStatus paymentStatus) {
+
 		ServerResponse response = new ServerResponse();
-		
+
 		try {
 			response = service.getPaymentsByStatus(paymentStatus);
-		 
+
 		} catch (Exception e) {
 			response.setData("An error occured" + e.getMessage());
-            response.setMessage("An error occured");
-            response.setSuccess(false);
-            response.setStatus(ServerResponseStatus.FAILED);
-            e.printStackTrace();
+			response.setMessage("An error occured");
+			response.setSuccess(false);
+			response.setStatus(ServerResponseStatus.FAILED);
+			e.printStackTrace();
 		}
-		
-		return new ResponseEntity<ServerResponse>(response, responseHeaders, ServerResponse.getStatus(response.getStatus()));
+
+		return new ResponseEntity<ServerResponse>(response, responseHeaders,
+				ServerResponse.getStatus(response.getStatus()));
 	}
-	
+
 	@ApiOperation(value = "View all payments", response = ServerResponse.class)
-	@RequestMapping( method = RequestMethod.GET)
-//	@PreAuthorize("hasAuthority('isAdmin') OR hasAuthority('isShareholder')")
+	@RequestMapping(method = RequestMethod.GET)
+	// @PreAuthorize("hasAuthority('isAdmin') OR hasAuthority('isShareholder')")
 	@ResponseBody
-	public ResponseEntity<?> getPayments(@RequestHeader("Authorization")  String authorization){
-				
+	public ResponseEntity<?> getPayments(@RequestHeader("Authorization") String authorization) {
+
 		ServerResponse response = new ServerResponse();
-		
+
 		try {
 			response = service.getPayments();
-		 
+
 		} catch (Exception e) {
 			response.setData("An error occured" + e.getMessage());
-            response.setMessage("An error occured");
-            response.setSuccess(false);
-            response.setStatus(ServerResponseStatus.FAILED);
-            e.printStackTrace();
+			response.setMessage("An error occured");
+			response.setSuccess(false);
+			response.setStatus(ServerResponseStatus.FAILED);
+			e.printStackTrace();
 		}
-		
-		return new ResponseEntity<ServerResponse>(response, responseHeaders, ServerResponse.getStatus(response.getStatus()));
+
+		return new ResponseEntity<ServerResponse>(response, responseHeaders,
+				ServerResponse.getStatus(response.getStatus()));
 	}
-	
-	
-	
+
 }

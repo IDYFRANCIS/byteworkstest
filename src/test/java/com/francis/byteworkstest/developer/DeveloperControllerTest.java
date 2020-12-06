@@ -34,7 +34,7 @@ public class DeveloperControllerTest {
 	
 
 	//Note: make sure you acquired authorization token from login for proper testing
-	String authorization = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsidXNlci13ZWItc2VydmljZSJdLCJ1c2VyX25hbWUiOiJyZWdpbmFmcmFuY2lzODNAZ21haWwuY29tIiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl0sImV4cCI6MTU3NTMyMjcxMCwiYXV0aG9yaXRpZXMiOlsiaXNVc2VyIl0sImp0aSI6ImZjODZiNzU4LTg3MTktNGUwOS04ZGExLWY3ZjNlZDUxYjRhYiIsImNsaWVudF9pZCI6InVzZXIifQ.ML6mY6oXqlQ0GDfIKFkR2OmPAYmCGXc7dgOSEFzzr50";
+	String authorization = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsidXNlci13ZWItc2VydmljZSJdLCJ1c2VyX25hbWUiOiJyZWdpbmFmcmFuY2lzODNAZ21haWwuY29tIiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl0sImV4cCI6MTU4MDQxMjc1OCwiYXV0aG9yaXRpZXMiOlsiaXNVc2VyIl0sImp0aSI6IjU5NTExYTk1LWZjOTItNDI0NS05NjgwLWZlYjVkMzA3MTAzNyIsImNsaWVudF9pZCI6InVzZXIifQ.eL411063lSpDDiGZ6bM5U33GruSrWYIrdp-67hbIv9Y";
 
 	@Before
 	  public void setup() {
@@ -45,14 +45,14 @@ public class DeveloperControllerTest {
 
 	@Test
 	public void create() throws Exception {
-		String userCode = "U1574778675817";
+		String userCode = "U1580369858476";
 		DeveloperDto request = new DeveloperDto();
 		request.getClass().getSuperclass();
 		request.setUserCode(userCode);
 		String json = gson.toJson(request);
 		
 		ResultActions mvcResult = mockMvc.perform(
-				MockMvcRequestBuilders.post("/developer/"+userCode)
+				MockMvcRequestBuilders.post("developer/"+userCode)
 				.contentType(MediaType.APPLICATION_JSON)
 				.header("Authorization", authorization)
 				.content(json)

@@ -50,7 +50,7 @@ public class UserServiceTest {
 	public void ActivateUser() throws Exception {
 		
 		ActivateUserRequest request = new ActivateUserRequest();
-		request.setActivationCode("n2iwViwR8OLcNL1IFdCRgckcysWBBKLFFWOLUom8"); //Note activation code generate every time you run this test class
+		request.setActivationCode("gOCUBlMxDjIDWUHvJ4KXBo4BQeSGT6TtpPr3Ko4i"); //Note activation code generate every time you run this test class
 		request.setPassword("password");
 
 		ServerResponse response = userService.userActivation(request);
@@ -62,7 +62,7 @@ public class UserServiceTest {
 	public void PasswordRestRequest() throws Exception {
 		
 		ResendUserActivationCodeDto request = new ResendUserActivationCodeDto();
-		request.setEmail("reginafrancis83@gmail.com");
+		request.setEmail("light@gmail.com");
 		
 		ServerResponse response = userService.reSendUserPassword(request);
 		System.out.println(response.getMessage());
@@ -73,7 +73,7 @@ public class UserServiceTest {
 	public void ResendUserActivation() throws Exception {
 		
 		ResendUserActivationCodeDto request = new ResendUserActivationCodeDto();
-		request.setEmail("reginafrancis832@gmail.com");
+		request.setEmail("light@gmail.com");
 		
 		ServerResponse response = userService.reSendUserActivation(request);
 		System.out.println(response.getMessage());

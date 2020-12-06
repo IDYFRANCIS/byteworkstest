@@ -74,7 +74,7 @@ public class UserControllerTest {
 		public void ActivateUser() throws Exception {
 			
 			ActivateUserRequest request = new ActivateUserRequest();
-			request.setActivationCode("ufTeq5YeIP8EGct3Wpk7LByN8i2G5bw50Jt4qhFR"); //Note activation code generate every time you run this test class
+			request.setActivationCode("gOCUBlMxDjIDWUHvJ4KXBo4BQeSGT6TtpPr3Ko4i"); //Note activation code generate every time you run this test class
 			request.setPassword("password");
 			
 			String json = gson.toJson(request);

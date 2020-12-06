@@ -55,9 +55,6 @@ public class PaymentServiceImpl implements PaymentService{
 	
 	
 	
-	
-	
-
 	@Override
 	public ServerResponse create(String userCode, PayForOrderRequestDto request) {
 		
@@ -151,7 +148,8 @@ public class PaymentServiceImpl implements PaymentService{
 			
 			
 			//Calculate offer price
-			double amount = order.getAmount();
+			double amount1 = order.getAmount();
+			double amount = order.getAmount() * 100;
 			request.setAmount(String.valueOf(amount));
 			request.setEmail(user.getEmail());
 			
@@ -168,9 +166,9 @@ public class PaymentServiceImpl implements PaymentService{
                 if(cardDataResponseDto != null && cardDataResponseDto.getData().getStatus().equals("success")){
                 	
                 	String transactionNumber = Utility.generateDigit() + Utility.toDate() + Utility.generateDigit();
+                	
                     Payment payment = new Payment();
-                    payment.setAmount(amount);
-                    
+                    payment.setAmount(amount1);    
                     payment.setPaymentId(payment.getPaymentId());
                     payment.setPaymentStatus(PaymentStatus.SUCCESSFUL);
                     payment.setReference(cardDataResponseDto.getData().getReference());
