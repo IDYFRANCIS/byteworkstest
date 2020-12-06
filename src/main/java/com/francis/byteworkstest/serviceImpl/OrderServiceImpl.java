@@ -266,7 +266,7 @@ public class OrderServiceImpl implements OrderService{
 			
 			Mail mail = new Mail();
             mail.setTo(appConstants.APP_ADMIN_EMAIL);
-            mail.setFrom("idongesitukut25@gmail.com");
+            mail.setFrom("idongesitrockdcode247@gmail.com");
             mail.setSubject("Food Order");
 
             Map<String, Object> model = new HashMap<String, Object>();

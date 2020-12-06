@@ -152,7 +152,7 @@ public class DeveloperServiceImpl implements DeveloperService{
 			//send mail notification on account creation
 			Mail mail = new Mail();
             mail.setTo(developer.getUser().getEmail());
-            mail.setFrom("idongesitukut25@gmail.com");
+            mail.setFrom("idongesitrockdcode247@gmail.com");
             mail.setSubject("Developer Account Creation");
 
             Map<String, Object> model = new HashMap<String, Object>();

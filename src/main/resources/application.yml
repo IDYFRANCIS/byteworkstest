@@ -4,8 +4,8 @@
   mail:
     default-encoding: UTF-8
     host: smtp.gmail.com
-    username: idongesitukut25@gmail.com
-    password: mariner25
+    username: idongesitrockdcode247@gmail.com
+    password: idongesit247
     port: 465
     properties:
       mail:
